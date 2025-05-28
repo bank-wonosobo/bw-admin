@@ -9,12 +9,11 @@ import {
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
-  PieChartIcon,
   PlugInIcon,
   FileIcon,
   InfoIcon,
+  TaskIcon,
 } from "../icons/index";
-import SidebarWidget from "./SidebarWidget";
 
 type NavItem = {
   name: string;
@@ -58,6 +57,16 @@ const navItems: NavItem[] = [
         pro: false,
       },
     ],
+  },
+  {
+    icon: <BoxCubeIcon />,
+    name: "Produk dan Layanan",
+    path: "/product-and-services",
+  },
+  {
+    icon: <TaskIcon />,
+    name: "Banner",
+    path: "/banner",
   },
 ];
 
