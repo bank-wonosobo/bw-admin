@@ -29,7 +29,7 @@ export default function ReportApprovalTable() {
     queryKey: ["reports"],
     queryFn: async () => {
       const response = await apiV1.get("/reports");
-      return response.data.data.reports;
+      return response.data.data;
     },
   });
 

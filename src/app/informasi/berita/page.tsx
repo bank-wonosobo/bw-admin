@@ -1,24 +1,12 @@
-import ComponentCard from "@/components/common/ComponentCard";
-import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import BasicTableOne from "@/components/tables/BasicTableOne";
 import { Metadata } from "next";
 import React from "react";
+import Page from "./PageClient";
 
 export const metadata: Metadata = {
   title: "Bank Wonosobo - Berita",
   description: "Bank Wonosobo",
-  // other metadata
 };
 
-export default function BasicTables() {
-  return (
-    <div>
-      <PageBreadcrumb pageTitle="Berita" />
-      <div className="space-y-6">
-        <ComponentCard title="Berita">
-          <BasicTableOne />
-        </ComponentCard>
-      </div>
-    </div>
-  );
+export default function PageWrapper() {
+  return <Page />;
 }

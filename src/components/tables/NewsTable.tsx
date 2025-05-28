@@ -1,4 +1,13 @@
-import React, { useState } from "react";
+import { apiV1 } from "@/api/api";
+import { useModal } from "@/hooks/useModal";
+import { PencilIcon, TrashBinIcon } from "@/icons/index";
+import { useQuery } from "@tanstack/react-query";
+import { format, isValid, parseISO } from "date-fns";
+import { id } from "date-fns/locale";
+import { useState } from "react";
+import ModalFormReport from "../modal/ModalFormReport";
+import Badge from "../ui/badge/Badge";
+import Button from "../ui/button/Button";
 import {
   Table,
   TableBody,
@@ -6,28 +15,17 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { QueryClient, useQuery } from "@tanstack/react-query";
-import { apiV1 } from "@/api/api";
-import { TrashBinIcon, PencilIcon } from "@/icons/index";
-import Button from "../ui/button/Button";
-import { useModal } from "@/hooks/useModal";
-import ModalFormReportType from "../modal/ModalFormReportType";
-import Image from "next/image";
-import Badge from "../ui/badge/Badge";
-import { IReports } from "@/types/Reports";
-import { format, isValid, parseISO } from "date-fns";
-import { id } from "date-fns/locale";
-import ModalFormReport from "../modal/ModalFormReport";
+import { INews } from "@/types/News";
 
-export default function ReportTable() {
+export default function NewsTable() {
   const {
     data = [],
     isLoading,
     isError,
-  } = useQuery<IReports[]>({
-    queryKey: ["reports"],
+  } = useQuery<INews[]>({
+    queryKey: ["news"],
     queryFn: async () => {
-      const response = await apiV1.get("/reports");
+      const response = await apiV1.get("/news");
       return response.data.data;
     },
   });
@@ -38,12 +36,12 @@ export default function ReportTable() {
   const [reportId, setReportId] = useState<any>(null);
   const [item, setItem] = useState<any>(null);
 
-  function showModal(act: any, id: any, item?: IReports[]) {
+  function showModal(act: any, id: any, item?: INews[]) {
     setAction(act);
     setReportId(id);
 
     if (act === "update" && item) {
-      const selected = item.find((item) => item.id === id);
+      const selected = item.find((item) => item.ID === id);
       setItem(selected ?? null);
     } else {
       setItem(null);
@@ -82,43 +80,31 @@ export default function ReportTable() {
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Deskripsi
+                  Slug
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Periode Awal
+                  Konten
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Periode Akhir
+                  Penulis
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Tahun
+                  Media
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Kuratal
-                </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  URL File
-                </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Versi
+                  Tanggal Publikasi
                 </TableCell>
                 <TableCell
                   isHeader
@@ -130,19 +116,7 @@ export default function ReportTable() {
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Upload oleh
-                </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Disetujui oleh
-                </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Tipe Laporan
+                  Disetujui Oleh
                 </TableCell>
                 <TableCell
                   isHeader
@@ -157,74 +131,56 @@ export default function ReportTable() {
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
               {Array.isArray(data) &&
                 data.map((order) => (
-                  <TableRow key={order.id}>
+                  <TableRow key={order.ID}>
                     <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                      {order.title}
+                      {order.Title}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {order.description}
+                      {order.Slug}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {order.period_start &&
-                      isValid(parseISO(order.period_start))
-                        ? format(parseISO(order.period_start), "d MMM yyyy", {
-                            locale: id,
-                          })
-                        : "-"}
-                    </TableCell>
-                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {order.period_start && isValid(parseISO(order.period_end))
-                        ? format(parseISO(order.period_end), "d MMM yyyy", {
-                            locale: id,
-                          })
-                        : "-"}
+                      {order.Content}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                      {order.year}
-                    </TableCell>
-                    <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                      {order.quarter ?? "-"}
+                      {order.Author}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                      {order.fileurl ? order.fileurl : "File kosong"}
+                      {order.ImageUrl ? order.ImageUrl : "File kosong"}
                     </TableCell>
-                    <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                      {order.version}
+                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                      {order.PublishedAt && isValid(parseISO(order.PublishedAt))
+                        ? format(parseISO(order.PublishedAt), "d MMM yyyy", {
+                            locale: id,
+                          })
+                        : "-"}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                       <Badge
                         size="sm"
                         color={
-                          order.status === "published"
+                          order.Status === "published"
                             ? "success"
-                            : order.status === "draft"
+                            : order.Status === "draft"
                             ? "warning"
                             : "error"
                         }
                       >
-                        {order.status}
+                        {order.Status}
                       </Badge>
                     </TableCell>
                     <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                      {order.upload_by}
-                    </TableCell>
-                    <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                      {order.approved_by ?? "-"}
-                    </TableCell>
-
-                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {order.report_type}
+                      {order.ApprovedBy ?? "-"}
                     </TableCell>
                     <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                       <div className="flex justify-center gap-2">
                         <Button
-                          onClick={() => showModal("update", order.id, data)}
+                          onClick={() => showModal("update", order.ID, data)}
                           size="xs"
                         >
                           <PencilIcon />
                         </Button>
                         <Button
-                          onClick={() => showModal("delete", order.id)}
+                          onClick={() => showModal("delete", order.ID)}
                           size="xs"
                           className="bg-red-500 hover:bg-red-600"
                         >
