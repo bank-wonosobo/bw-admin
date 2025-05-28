@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
 import { useState } from "react";
-import ModalFormReport from "../modal/ModalFormReport";
+import ModalFormNews from "../modal/ModalFormNews";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
 import {
@@ -33,12 +33,12 @@ export default function NewsTable() {
   const { isOpen, openModal, closeModal } = useModal();
 
   const [action, setAction] = useState<any>(null);
-  const [reportId, setReportId] = useState<any>(null);
+  const [newsId, setNewsId] = useState<any>(null);
   const [item, setItem] = useState<any>(null);
 
   function showModal(act: any, id: any, item?: INews[]) {
     setAction(act);
-    setReportId(id);
+    setNewsId(id);
 
     if (act === "update" && item) {
       const selected = item.find((item) => item.ID === id);
@@ -194,10 +194,10 @@ export default function NewsTable() {
           </Table>
         </div>
       </div>
-      <ModalFormReport
+      <ModalFormNews
         isOpen={isOpen}
         action={action}
-        reportId={reportId}
+        newsId={newsId}
         closeModal={closeModal}
         item={item}
       />
