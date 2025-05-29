@@ -5,7 +5,7 @@ import React from "react";
 import Page from "./PageClient";
 
 export const metadata: Metadata = {
-  title: "Bank Wonosobo - Approval",
+  title: "Bank Wonosobo - Approval Laporan Publikasi",
   description: "Bank Wonosobo",
 };
 

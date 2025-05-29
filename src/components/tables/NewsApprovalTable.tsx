@@ -1,11 +1,9 @@
 import { apiV1 } from "@/api/api";
-import { useModal } from "@/hooks/useModal";
-import { PencilIcon, TrashBinIcon } from "@/icons/index";
-import { useQuery } from "@tanstack/react-query";
+import { INews } from "@/types/News";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
-import { useState } from "react";
-import ModalFormNews from "../modal/ModalFormNews";
+import { toast } from "react-toastify";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
 import {
@@ -15,9 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { INews } from "@/types/News";
 
-export default function NewsTable() {
+export default function NewsApprovalTable() {
   const {
     data = [],
     isLoading,
@@ -30,24 +27,54 @@ export default function NewsTable() {
     },
   });
 
-  const { isOpen, openModal, closeModal } = useModal();
+  const queryClient = useQueryClient();
 
-  const [action, setAction] = useState<any>(null);
-  const [newsId, setNewsId] = useState<any>(null);
-  const [item, setItem] = useState<any>(null);
+  const { mutate: approve, isPending: isPendingApprove } = useMutation({
+    mutationFn: async (reportId: string) => {
+      const res = await apiV1.put(`/news/${reportId}/approve`);
+      return res.data;
+    },
+    onError: (err: any) => {
+      console.error("Approve Error:", err);
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Terjadi kesalahan saat memublikasi data.";
+      toast.error(message);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["news"] });
+      toast.success("Berhasil memublikasi berita.");
+    },
+  });
 
-  function showModal(act: any, id: any, item?: INews[]) {
-    setAction(act);
-    setNewsId(id);
+  const { mutate: archive, isPending: isPendingArchive } = useMutation({
+    mutationFn: async (reportId: string) => {
+      const res = await apiV1.put(`/news/${reportId}/archive`);
+      return res.data;
+    },
+    onError: (err: any) => {
+      console.error("Approve Error:", err);
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Terjadi kesalahan saat mengarsipkan data.";
+      toast.error(message);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["news"] });
+      toast.success("Berhasil mengarsipkan berita.");
+    },
+  });
 
-    if (act === "update" && item) {
-      const selected = item.find((item) => item.id === id);
-      setItem(selected ?? null);
-    } else {
-      setItem(null);
+  const onApprove = (action: "publish" | "archived", reportId: string) => {
+    if (action === "publish") {
+      approve(reportId);
     }
-    openModal();
-  }
+    if (action === "archived") {
+      archive(reportId);
+    }
+  };
 
   if (isLoading)
     return (
@@ -173,21 +200,23 @@ export default function NewsTable() {
                       {order.approved_by ?? "-"}
                     </TableCell>
                     <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
-                      <div className="flex justify-center gap-2">
+                      {order.status === "published" ? (
                         <Button
-                          onClick={() => showModal("update", order.id, data)}
+                          onClick={() => onApprove("archived", order.id)}
                           size="xs"
+                          className="px-3 text-xs font-normal bg-yellow-500 hover:bg-yellow-600"
                         >
-                          <PencilIcon />
+                          Arsipkan
                         </Button>
+                      ) : (
                         <Button
-                          onClick={() => showModal("delete", order.id)}
+                          onClick={() => onApprove("publish", order.id)}
                           size="xs"
-                          className="bg-red-500 hover:bg-red-600"
+                          className="px-3 text-xs font-normal bg-green-500 hover:bg-green-600"
                         >
-                          <TrashBinIcon />
+                          Publish
                         </Button>
-                      </div>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -195,13 +224,6 @@ export default function NewsTable() {
           </Table>
         </div>
       </div>
-      <ModalFormNews
-        isOpen={isOpen}
-        action={action}
-        newsId={newsId}
-        closeModal={closeModal}
-        item={item}
-      />
     </div>
   );
 }

@@ -1,13 +1,13 @@
 export interface INews {
-  ID: string;
-  Title: string;
-  Slug: string;
-  Content: string;
-  Author: string;
-  ImageUrl: string;
-  PublishedAt: string;
-  Status: "draft" | "published" | "archived";
-  ApprovedBy: string;
-  CreatedAt: string;
-  UpdatedAt: string;
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  author: string;
+  image_url: string;
+  published_at: string;
+  status: "draft" | "published" | "archived";
+  approved_by: string;
+  created_at: string;
+  updated_at: string;
 }

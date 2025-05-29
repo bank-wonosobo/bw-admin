@@ -48,10 +48,9 @@ const ModalFormNews: React.FC<ModalProps> = ({
     if (isOpen) {
       if (action === "update" && item) {
         reset({
-          title: item.Title,
-          slug: item.Slug,
-          content: item.Content,
-          image: item.ImageUrl,
+          title: item.title,
+          slug: item.slug,
+          content: item.content,
         });
       } else {
         reset();
@@ -59,20 +58,23 @@ const ModalFormNews: React.FC<ModalProps> = ({
     }
   }, [isOpen, reset, action, item]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      console.log("Selected file:", file.name);
-    }
-  };
-
   const { mutate: create, isPending: isPendingCreate } = useMutation({
     mutationFn: async (data: NewsFormInput) => {
-      const payload = {
-        ...data,
-      };
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("slug", data.content);
+      formData.append("content", data.content);
 
-      const res = await apiV1.post(`/news`, payload);
+      if (data.image) {
+        formData.append("image", data.image);
+      }
+
+      const res = await apiV1.post(`/news`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       return res.data.data;
     },
     onError: (err: any) => {
@@ -92,11 +94,18 @@ const ModalFormNews: React.FC<ModalProps> = ({
 
   const { mutate: update, isPending: isPendingUpdate } = useMutation({
     mutationFn: async (data: NewsFormInput) => {
-      const payload = {
-        ...data,
-      };
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("slug", data.content);
+      formData.append("content", data.content);
 
-      const res = await apiV1.put(`/news/${newsId}`, payload);
+      if (data.image) {
+        formData.append("image", data.image);
+      }
+
+      console.log("image =>", data);
+
+      const res = await apiV1.put(`/news/${newsId}`, formData);
       return res.data.data;
     },
     onError: (err: any) => {
@@ -162,7 +171,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
                   <Label>Judul Berita</Label>
                   <Input
                     id="title"
-                    type="text"
+                    type="i"
                     placeholder="Judul berita"
                     {...register("title")}
                     hint={errors.title?.message}
@@ -195,10 +204,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
                 </div>
                 <div className="col-span-1 sm:col-span-2">
                   <Label>Upload file</Label>
-                  <FileInput
-                    onChange={handleFileChange}
-                    className="custom-class"
-                  />
+                  <FileInput name="image" className="custom-class" />
                 </div>
               </div>
 
