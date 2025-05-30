@@ -28,7 +28,7 @@ export default function NewsTable() {
     isLoading,
     isError,
   } = useQuery<INews[]>({
-    queryKey: ["news", currentPage], // <-- depend on page
+    queryKey: ["news", currentPage],
     queryFn: async () => {
       const response = await apiV1.get("/news", {
         params: { page: currentPage },
