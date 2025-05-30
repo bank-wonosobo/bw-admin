@@ -15,6 +15,7 @@ import DeleteHeader from "../ui/alert/DeleteHeader";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import FileInput from "../form/input/FileInput";
+import RichTextEditor from "../form/input/RIchTextEditor";
 
 type ModalProps = {
   action?: "create" | "update" | "delete" | "approval" | null;
@@ -62,7 +63,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
     mutationFn: async (data: NewsFormInput) => {
       const formData = new FormData();
       formData.append("title", data.title);
-      formData.append("slug", data.content);
+      formData.append("slug", data.slug);
       formData.append("content", data.content);
 
       if (data.image) {
@@ -96,14 +97,12 @@ const ModalFormNews: React.FC<ModalProps> = ({
     mutationFn: async (data: NewsFormInput) => {
       const formData = new FormData();
       formData.append("title", data.title);
-      formData.append("slug", data.content);
+      formData.append("slug", data.slug);
       formData.append("content", data.content);
 
       if (data.image) {
         formData.append("image", data.image);
       }
-
-      console.log("image =>", data);
 
       const res = await apiV1.put(`/news/${newsId}`, formData);
       return res.data.data;
@@ -193,15 +192,14 @@ const ModalFormNews: React.FC<ModalProps> = ({
 
                 <div className="col-span-1 sm:col-span-2">
                   <Label>Konten Berita</Label>
-                  <TextArea
-                    id="content"
-                    placeholder="Deskripsi berita"
-                    rows={3}
-                    {...register("content")}
-                    hint={errors.content?.message}
-                    error={!!errors.content}
-                  />
+                  <RichTextEditor name="content" />
+                  {errors.content && (
+                    <p className="mt-2 text-sm text-red-500">
+                      {errors.content.message}
+                    </p>
+                  )}
                 </div>
+
                 <div className="col-span-1 sm:col-span-2">
                   <Label>Upload file</Label>
                   <FileInput name="image" className="custom-class" />
