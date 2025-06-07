@@ -6,6 +6,10 @@ export const apiV1 = axios.create({
   baseURL: `${baseURL}/admin`,
 });
 
+export const apiV1na = axios.create({
+  baseURL: `${baseURL}`,
+});
+
 // apiV1.interceptors.request.use(
 //   (config) => {
 //     const token = Cookies.get("token");

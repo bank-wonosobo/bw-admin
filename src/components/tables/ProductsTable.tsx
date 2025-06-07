@@ -1,11 +1,11 @@
-import { apiV1 } from "@/api/api";
+import { apiV1na } from "@/api/api";
 import { useModal } from "@/hooks/useModal";
 import { PencilIcon, TrashBinIcon } from "@/icons/index";
 import { useQuery } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
 import { useState } from "react";
-import ModalFormNews from "../modal/ModalFormNews";
+import ModalFormProducts from "../modal/ModalFormProducts";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
 import {
@@ -15,11 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { INews } from "@/types/News";
+import { IProducts } from "@/types/Products";
 import DOMPurify from "dompurify";
 import Pagination from "./Pagination";
 
-export default function ProductsAndServicesTable() {
+export default function ProductsTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
 
@@ -27,10 +27,10 @@ export default function ProductsAndServicesTable() {
     data = [],
     isLoading,
     isError,
-  } = useQuery<INews[]>({
-    queryKey: ["news", currentPage],
+  } = useQuery<IProducts[]>({
+    queryKey: ["products", currentPage],
     queryFn: async () => {
-      const response = await apiV1.get("/news", {
+      const response = await apiV1na.get("/products", {
         params: { page: currentPage },
       });
       setTotalPage(response.data.total_page);
@@ -40,12 +40,12 @@ export default function ProductsAndServicesTable() {
 
   const { isOpen, openModal, closeModal } = useModal();
   const [action, setAction] = useState<any>(null);
-  const [newsId, setNewsId] = useState<any>(null);
+  const [productsId, setProductsId] = useState<any>(null);
   const [item, setItem] = useState<any>(null);
 
-  function showModal(act: any, id: any, item?: INews[]) {
+  function showModal(act: any, id: any, item?: IProducts[]) {
     setAction(act);
-    setNewsId(id);
+    setProductsId(id);
 
     if (act === "update" && item) {
       const selected = item.find((item) => item.id === id);
@@ -82,25 +82,13 @@ export default function ProductsAndServicesTable() {
                     isHeader
                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                   >
-                    Judul
+                    Nama
                   </TableCell>
                   <TableCell
                     isHeader
                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                   >
-                    Slug
-                  </TableCell>
-                  <TableCell
-                    isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                  >
-                    Konten
-                  </TableCell>
-                  <TableCell
-                    isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                  >
-                    Penulis
+                    Deskripsi
                   </TableCell>
                   <TableCell
                     isHeader
@@ -112,19 +100,13 @@ export default function ProductsAndServicesTable() {
                     isHeader
                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                   >
-                    Tanggal Publikasi
+                    Tagline
                   </TableCell>
                   <TableCell
                     isHeader
                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                   >
-                    Status
-                  </TableCell>
-                  <TableCell
-                    isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                  >
-                    Disetujui Oleh
+                    Kategori Produk
                   </TableCell>
                   <TableCell
                     isHeader
@@ -141,46 +123,23 @@ export default function ProductsAndServicesTable() {
                   data.map((order) => (
                     <TableRow key={order.id}>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.title}
-                      </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.slug}
+                        {order.name}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <div
-                          dangerouslySetInnerHTML={{ __html: order.content }}
+                          dangerouslySetInnerHTML={{
+                            __html: order.description,
+                          }}
                         />
-                      </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {order.author}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
                         {order.image_url ? order.image_url : "File kosong"}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.published_at &&
-                        isValid(parseISO(order.published_at))
-                          ? format(parseISO(order.published_at), "d MMM yyyy", {
-                              locale: id,
-                            })
-                          : "-"}
+                      <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                        {order.tagline}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        <Badge
-                          size="sm"
-                          color={
-                            order.status === "published"
-                              ? "success"
-                              : order.status === "draft"
-                              ? "warning"
-                              : "error"
-                          }
-                        >
-                          {order.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.approved_by ?? "-"}
+                      <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                        {order.product_category}
                       </TableCell>
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                         <div className="flex justify-center gap-2">
@@ -205,10 +164,10 @@ export default function ProductsAndServicesTable() {
             </Table>
           </div>
         </div>
-        <ModalFormNews
+        <ModalFormProducts
           isOpen={isOpen}
           action={action}
-          newsId={newsId}
+          // productsId={productsId}
           closeModal={closeModal}
           item={item}
         />

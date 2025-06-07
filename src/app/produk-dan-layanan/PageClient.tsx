@@ -4,7 +4,7 @@ import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import ModalFormReport from "@/components/modal/ModalFormReport";
 import BasicTableOne from "@/components/tables/BasicTableOne";
-import ProductsAndServicesTable from "@/components/tables/ProductsAndServicesTable";
+import ProductsTable from "@/components/tables/ProductsTable";
 
 export default function Page() {
   return (
@@ -15,7 +15,7 @@ export default function Page() {
           ModalComponent={ModalFormReport}
           title="Produk dan Layanan"
         >
-          <ProductsAndServicesTable />
+          <ProductsTable />
         </ComponentCard>
       </div>
     </div>
