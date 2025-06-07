@@ -2,15 +2,15 @@
 
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import NewsApprovalTable from "@/components/tables/NewsApprovalTable";
+import AnnouncementApprovalTable from "@/components/tables/AnnouncementApprovalTable";
 
 export default function Page() {
   return (
     <div>
-      <PageBreadcrumb pageTitle="Approval Berita" />
+      <PageBreadcrumb pageTitle="Approval Pengumuman" />
       <div className="space-y-6">
         <ComponentCard title="Approval">
-          <NewsApprovalTable />
+          <AnnouncementApprovalTable />
         </ComponentCard>
       </div>
     </div>

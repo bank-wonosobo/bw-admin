@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Page from "./PageClient";
 
 export const metadata: Metadata = {
-  title: "Bank Wonosobo - Approval Berita",
+  title: "Bank Wonosobo - Approval Pengumuman",
   description: "Bank Wonosobo",
 };
 
