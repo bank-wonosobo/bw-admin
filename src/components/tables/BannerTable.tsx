@@ -187,7 +187,7 @@ export default function BannerTable() {
         <ModalFormBanner
           isOpen={isOpen}
           action={action}
-          // bannerId={bannerId}
+          bannerId={bannerId}
           closeModal={closeModal}
           item={item}
         />
