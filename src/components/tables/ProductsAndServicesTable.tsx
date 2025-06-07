@@ -1,12 +1,11 @@
 import { apiV1 } from "@/api/api";
 import { useModal } from "@/hooks/useModal";
 import { PencilIcon, TrashBinIcon } from "@/icons/index";
-import { IAnnouncement } from "@/types/Announcement";
 import { useQuery } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
 import { useState } from "react";
-import ModalFormAnnouncement from "../modal/ModalFormAnnouncement";
+import ModalFormNews from "../modal/ModalFormNews";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
 import {
@@ -16,9 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { INews } from "@/types/News";
+import DOMPurify from "dompurify";
 import Pagination from "./Pagination";
 
-export default function AnnouncementTable() {
+export default function ProductsAndServicesTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
 
@@ -26,10 +27,10 @@ export default function AnnouncementTable() {
     data = [],
     isLoading,
     isError,
-  } = useQuery<IAnnouncement[]>({
-    queryKey: ["announcement", currentPage],
+  } = useQuery<INews[]>({
+    queryKey: ["news", currentPage],
     queryFn: async () => {
-      const response = await apiV1.get("/announcements", {
+      const response = await apiV1.get("/news", {
         params: { page: currentPage },
       });
       setTotalPage(response.data.total_page);
@@ -39,12 +40,12 @@ export default function AnnouncementTable() {
 
   const { isOpen, openModal, closeModal } = useModal();
   const [action, setAction] = useState<any>(null);
-  const [announcementId, setAnnouncementId] = useState<any>(null);
+  const [newsId, setNewsId] = useState<any>(null);
   const [item, setItem] = useState<any>(null);
 
-  function showModal(act: any, id: any, item?: IAnnouncement[]) {
+  function showModal(act: any, id: any, item?: INews[]) {
     setAction(act);
-    setAnnouncementId(id);
+    setNewsId(id);
 
     if (act === "update" && item) {
       const selected = item.find((item) => item.id === id);
@@ -87,6 +88,12 @@ export default function AnnouncementTable() {
                     isHeader
                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                   >
+                    Slug
+                  </TableCell>
+                  <TableCell
+                    isHeader
+                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                  >
                     Konten
                   </TableCell>
                   <TableCell
@@ -99,31 +106,7 @@ export default function AnnouncementTable() {
                     isHeader
                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                   >
-                    Target Audiens
-                  </TableCell>
-                  <TableCell
-                    isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                  >
-                    Tanggal Mulai
-                  </TableCell>
-                  <TableCell
-                    isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                  >
-                    Tanggal Akhir
-                  </TableCell>
-                  <TableCell
-                    isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                  >
-                    Lampiran
-                  </TableCell>
-                  <TableCell
-                    isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                  >
-                    Status Aktif
+                    Media
                   </TableCell>
                   <TableCell
                     isHeader
@@ -161,6 +144,9 @@ export default function AnnouncementTable() {
                         {order.title}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                        {order.slug}
+                      </TableCell>
+                      <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <div
                           dangerouslySetInnerHTML={{ __html: order.content }}
                         />
@@ -168,35 +154,8 @@ export default function AnnouncementTable() {
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                         {order.author}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {order.target_audience}
-                      </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.start_date && isValid(parseISO(order.start_date))
-                          ? format(parseISO(order.start_date), "d MMM yyyy", {
-                              locale: id,
-                            })
-                          : "-"}
-                      </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.end_date && isValid(parseISO(order.end_date))
-                          ? format(parseISO(order.end_date), "d MMM yyyy", {
-                              locale: id,
-                            })
-                          : "-"}
-                      </TableCell>
                       <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.attachment_url
-                          ? order.attachment_url
-                          : "File kosong"}
-                      </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        <Badge
-                          size="sm"
-                          color={order.is_active === true ? "success" : "error"}
-                        >
-                          {order.is_active ? "Aktif" : "Nonaktif"}
-                        </Badge>
+                        {order.image_url ? order.image_url : "File kosong"}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         {order.published_at &&
@@ -246,10 +205,10 @@ export default function AnnouncementTable() {
             </Table>
           </div>
         </div>
-        <ModalFormAnnouncement
+        <ModalFormNews
           isOpen={isOpen}
           action={action}
-          announcementId={announcementId}
+          newsId={newsId}
           closeModal={closeModal}
           item={item}
         />

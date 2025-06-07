@@ -2,7 +2,7 @@
 
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import ModalFormNews from "@/components/modal/ModalFormNews";
+import ModalFormAnnouncement from "@/components/modal/ModalFormAnnouncement";
 import AnnouncementTable from "@/components/tables/AnnouncementTable";
 
 export default function Page() {
@@ -10,7 +10,10 @@ export default function Page() {
     <div>
       <PageBreadcrumb pageTitle="Pengumuman" />
       <div className="space-y-6">
-        <ComponentCard ModalComponent={ModalFormNews} title="Pengumuman">
+        <ComponentCard
+          ModalComponent={ModalFormAnnouncement}
+          title="Pengumuman"
+        >
           <AnnouncementTable />
         </ComponentCard>
       </div>

@@ -73,7 +73,7 @@ const navItems: NavItem[] = [
   {
     icon: <BoxCubeIcon />,
     name: "Produk dan Layanan",
-    path: "/product-and-services",
+    path: "/produk-dan-layanan",
   },
   {
     icon: <TaskIcon />,
