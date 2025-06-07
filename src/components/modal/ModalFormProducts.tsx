@@ -1,39 +1,37 @@
 "use client";
-import { apiV1 } from "@/api/api";
-import { INews } from "@/types/News";
-import { NewsFormInput, newsSchema } from "@/validation/newsSchema";
+import { apiV1na } from "@/api/api";
+import { IProducts } from "@/types/Products";
+import { ProductsFormInput, productsSchema } from "@/validation/productsSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Label from "../form/Label";
-import DatePicker from "../form/date-picker";
+import FileInput from "../form/input/FileInput";
 import Input from "../form/input/InputField";
-import TextArea from "../form/input/TextArea";
+import RichTextEditor from "../form/input/RIchTextEditor";
 import DeleteHeader from "../ui/alert/DeleteHeader";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
-import FileInput from "../form/input/FileInput";
-import RichTextEditor from "../form/input/RIchTextEditor";
 
 type ModalProps = {
   action?: "create" | "update" | "delete" | "approval" | null;
   isOpen: boolean;
   closeModal: () => void;
-  newsId?: number | null;
-  item?: INews | null;
+  productsId?: number | null;
+  item?: IProducts | null;
 };
 
 const ModalFormProducts: React.FC<ModalProps> = ({
   action,
   closeModal,
   isOpen,
-  newsId,
+  productsId,
   item,
 }) => {
-  const methods = useForm<NewsFormInput>({
-    resolver: zodResolver(newsSchema),
+  const methods = useForm<ProductsFormInput>({
+    resolver: zodResolver(productsSchema),
   });
 
   const {
@@ -49,9 +47,10 @@ const ModalFormProducts: React.FC<ModalProps> = ({
     if (isOpen) {
       if (action === "update" && item) {
         reset({
-          title: item.title,
-          slug: item.slug,
-          content: item.content,
+          name: item.name,
+          description: item.description,
+          tagline: item.tagline,
+          product_category: item.product_category,
         });
       } else {
         reset();
@@ -60,17 +59,18 @@ const ModalFormProducts: React.FC<ModalProps> = ({
   }, [isOpen, reset, action, item]);
 
   const { mutate: create, isPending: isPendingCreate } = useMutation({
-    mutationFn: async (data: NewsFormInput) => {
+    mutationFn: async (data: ProductsFormInput) => {
       const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("slug", data.slug);
-      formData.append("content", data.content);
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("tagline", data.tagline);
+      formData.append("product_category", data.product_category);
 
       if (data.image) {
         formData.append("image", data.image);
       }
 
-      const res = await apiV1.post(`/news`, formData, {
+      const res = await apiV1na.post(`/products`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -87,24 +87,25 @@ const ModalFormProducts: React.FC<ModalProps> = ({
       toast.error(message);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["news"] });
-      toast.success("Berhasil menambahkan berita.");
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Berhasil menambahkan produk.");
       closeModal();
     },
   });
 
   const { mutate: update, isPending: isPendingUpdate } = useMutation({
-    mutationFn: async (data: NewsFormInput) => {
+    mutationFn: async (data: ProductsFormInput) => {
       const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("slug", data.slug);
-      formData.append("content", data.content);
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("tagline", data.tagline);
+      formData.append("product_category", data.product_category);
 
       if (data.image) {
         formData.append("image", data.image);
       }
 
-      const res = await apiV1.put(`/news/${newsId}`, formData);
+      const res = await apiV1na.put(`/products/${productsId}`, formData);
       return res.data.data;
     },
     onError: (err: any) => {
@@ -116,15 +117,15 @@ const ModalFormProducts: React.FC<ModalProps> = ({
       toast.error(message);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["news"] });
-      toast.success("Berhasil mengubah berita.");
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Berhasil mengubah produk.");
       closeModal();
     },
   });
 
-  const { mutate: deleteNews, isPending: isPendingDelete } = useMutation({
+  const { mutate: deleteProducts, isPending: isPendingDelete } = useMutation({
     mutationFn: async () => {
-      const res = await apiV1.delete(`/news/${newsId}`);
+      const res = await apiV1na.delete(`/products/${productsId}`);
       return res.data;
     },
     onError: (err: any) => {
@@ -136,13 +137,13 @@ const ModalFormProducts: React.FC<ModalProps> = ({
       toast.error(message);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["news"] });
-      toast.success("Berhasil menghapus berita.");
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Berhasil menghapus produk.");
       closeModal();
     },
   });
 
-  const onSubmitForm = (data: NewsFormInput) => {
+  const onSubmitForm = (data: ProductsFormInput) => {
     if (action === "create") {
       create(data);
     }
@@ -161,41 +162,53 @@ const ModalFormProducts: React.FC<ModalProps> = ({
         <>
           <h4 className="mb-7 text-lg font-medium text-gray-800 dark:text-white/90">
             {action === "create" ? "Buat " : "Edit "}
-            Berita
+            Produk
           </h4>
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmitForm)}>
               <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-                <div className="col-span-1">
-                  <Label>Judul Berita</Label>
+                <div className="col-span-1 sm:col-span-2">
+                  <Label>Nama Produk</Label>
                   <Input
-                    id="title"
+                    id="name"
                     type="i"
-                    placeholder="Judul berita"
-                    {...register("title")}
-                    hint={errors.title?.message}
-                    error={!!errors.title}
+                    placeholder="Nama produk"
+                    {...register("name")}
+                    hint={errors.name?.message}
+                    error={!!errors.name}
                   />
                 </div>
 
                 <div className="col-span-1">
-                  <Label>Slug</Label>
+                  <Label>Kategori Produk</Label>
                   <Input
-                    id="slug"
-                    type="text"
-                    placeholder="Slug"
-                    {...register("slug")}
-                    hint={errors.slug?.message}
-                    error={!!errors.slug}
+                    id="product_category"
+                    type="i"
+                    placeholder="Kategori produk"
+                    {...register("product_category")}
+                    hint={errors.product_category?.message}
+                    error={!!errors.product_category}
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <Label>Tagline</Label>
+                  <Input
+                    id="tagline"
+                    type="i"
+                    placeholder="Tagline"
+                    {...register("tagline")}
+                    hint={errors.tagline?.message}
+                    error={!!errors.tagline}
                   />
                 </div>
 
                 <div className="col-span-1 sm:col-span-2">
-                  <Label>Konten Berita</Label>
-                  <RichTextEditor name="content" />
-                  {errors.content && (
+                  <Label>Deskripsi Produk</Label>
+                  <RichTextEditor name="description" />
+                  {errors.description && (
                     <p className="mt-2 text-sm text-red-500">
-                      {errors.content.message}
+                      {errors.description.message}
                     </p>
                   )}
                 </div>
@@ -231,12 +244,12 @@ const ModalFormProducts: React.FC<ModalProps> = ({
             Hapus Data ?
           </h4>
           <p className="text-sm leading-6 text-gray-500 dark:text-gray-400">
-            Aksi ini akan menghapus data publikasi
+            Aksi ini akan menghapus data produk
           </p>
 
           <div className="flex items-center justify-center w-full gap-3 mt-7">
             <button
-              onClick={() => deleteNews()}
+              onClick={() => deleteProducts()}
               type="button"
               className="flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-500 shadow-theme-xs hover:bg-error-600 sm:w-auto"
             >

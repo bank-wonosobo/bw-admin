@@ -167,7 +167,7 @@ export default function ProductsTable() {
         <ModalFormProducts
           isOpen={isOpen}
           action={action}
-          // productsId={productsId}
+          productsId={productsId}
           closeModal={closeModal}
           item={item}
         />

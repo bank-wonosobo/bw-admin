@@ -283,7 +283,7 @@ const ModalFormAnnouncement: React.FC<ModalProps> = ({
             Hapus Data ?
           </h4>
           <p className="text-sm leading-6 text-gray-500 dark:text-gray-400">
-            Aksi ini akan menghapus data publikasi
+            Aksi ini akan menghapus data pengumuman
           </p>
 
           <div className="flex items-center justify-center w-full gap-3 mt-7">
