@@ -13,6 +13,7 @@ import {
   FileIcon,
   InfoIcon,
   TaskIcon,
+  ShootingStarIcon,
 } from "../icons/index";
 
 type NavItem = {
@@ -46,14 +47,25 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    name: "Informasi",
-    icon: <InfoIcon />,
+    name: "Berita",
+    icon: <ShootingStarIcon />,
     subItems: [
-      { name: "Berita", path: "/informasi/berita", pro: false },
-      { name: "Pengumuman", path: "/informasi/pengumuman", pro: false },
+      { name: "List Berita", path: "/berita/list", pro: false },
       {
         name: "Perseujuan / Approval",
-        path: "/informasi/approval",
+        path: "/berita/approval",
+        pro: false,
+      },
+    ],
+  },
+  {
+    name: "Pengumuman",
+    icon: <InfoIcon />,
+    subItems: [
+      { name: "List Pengumuman", path: "/pengumuman/list", pro: false },
+      {
+        name: "Perseujuan / Approval",
+        path: "/pengumuman/approval",
         pro: false,
       },
     ],
