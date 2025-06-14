@@ -2,7 +2,7 @@ import { apiV1 } from "@/api/api";
 import { useModal } from "@/hooks/useModal";
 import { PencilIcon, TrashBinIcon } from "@/icons/index";
 import { IBanner } from "@/types/Banner";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
 import { useState } from "react";
@@ -17,10 +17,13 @@ import {
   TableRow,
 } from "../ui/table";
 import Pagination from "./Pagination";
+import { toast } from "react-toastify";
 
 export default function BannerTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
+
+  const queryClient = useQueryClient();
 
   const {
     data = [],
@@ -54,6 +57,26 @@ export default function BannerTable() {
     }
     openModal();
   }
+
+  const { mutate: activateBanner, isPending: isPendingActivate } = useMutation({
+    mutationFn: async (bannerId: string) => {
+      const res = await apiV1.put(`/banners/${bannerId}/activate`);
+      return res.data;
+    },
+    onError: (err: any) => {
+      console.error("Activate Error:", err);
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Terjadi kesalahan saat merubah status aktivasi data.";
+      toast.error(message);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["banner"] });
+      toast.success("Berhasil merubah status aktivasi banner.");
+      closeModal();
+    },
+  });
 
   if (isLoading)
     return (
@@ -145,7 +168,7 @@ export default function BannerTable() {
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                         {order.is_active ? (
                           <Button
-                            // onClick={() => onApprove("archived", order.id)}
+                            onClick={() => activateBanner(order.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-yellow-500 hover:bg-yellow-600"
                           >
@@ -153,7 +176,7 @@ export default function BannerTable() {
                           </Button>
                         ) : (
                           <Button
-                            // onClick={() => onApprove("publish", order.id)}
+                            onClick={() => activateBanner(order.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-green-500 hover:bg-green-600"
                           >

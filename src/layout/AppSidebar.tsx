@@ -14,6 +14,7 @@ import {
   InfoIcon,
   TaskIcon,
   ShootingStarIcon,
+  EnvelopeIcon,
 } from "../icons/index";
 
 type NavItem = {
@@ -79,6 +80,11 @@ const navItems: NavItem[] = [
     icon: <TaskIcon />,
     name: "Banner",
     path: "/banner",
+  },
+  {
+    icon: <EnvelopeIcon />,
+    name: "Jaringan Kantor",
+    path: "/jaringan-kantor",
   },
 ];
 
