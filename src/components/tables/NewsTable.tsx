@@ -50,6 +50,9 @@ export default function NewsTable() {
     if (act === "update" && item) {
       const selected = item.find((item) => item.id === id);
       setItem(selected ?? null);
+    } else if (act === "detail" && item) {
+      const selected = item.find((item) => item.id === id);
+      setItem(selected ?? null);
     } else {
       setItem(null);
     }
@@ -132,6 +135,12 @@ export default function NewsTable() {
                   >
                     Aksi
                   </TableCell>
+                  <TableCell
+                    isHeader
+                    className="px-5 py-3 font-medium text-gray-500 text-center text-theme-xs dark:text-gray-400"
+                  >
+                    Detail
+                  </TableCell>
                 </TableRow>
               </TableHeader>
 
@@ -148,6 +157,7 @@ export default function NewsTable() {
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <div
+                          className="line-clamp-3 overflow-hidden text-ellipsis"
                           dangerouslySetInnerHTML={{ __html: order.content }}
                         />
                       </TableCell>
@@ -196,6 +206,17 @@ export default function NewsTable() {
                             className="bg-red-500 hover:bg-red-600"
                           >
                             <TrashBinIcon />
+                          </Button>
+                        </div>
+                      </TableCell>
+                      <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
+                        <div className="flex justify-center gap-2">
+                          <Button
+                            onClick={() => showModal("detail", order.id, data)}
+                            size="xs"
+                            className="bg-yellow-500 hover:bg-yellow-600"
+                          >
+                            <p className="font-light">Detail</p>
                           </Button>
                         </div>
                       </TableCell>

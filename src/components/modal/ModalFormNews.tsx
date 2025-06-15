@@ -16,9 +16,10 @@ import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import FileInput from "../form/input/FileInput";
 import RichTextEditor from "../form/input/RIchTextEditor";
+import Image from "next/image";
 
 type ModalProps = {
-  action?: "create" | "update" | "delete" | "approval" | null;
+  action?: "create" | "update" | "delete" | "approval" | "detail" | null;
   isOpen: boolean;
   closeModal: () => void;
   newsId?: number | null;
@@ -44,6 +45,8 @@ const ModalFormNews: React.FC<ModalProps> = ({
   } = methods;
 
   const queryClient = useQueryClient();
+
+  console.log("======", item);
 
   useEffect(() => {
     if (isOpen) {
@@ -156,6 +159,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
       isOpen={isOpen}
       onClose={closeModal}
       className="max-w-[584px] p-5 lg:p-10"
+      isFullscreen={action === "detail"}
     >
       {(action === "create" || action === "update") && (
         <>
@@ -242,6 +246,86 @@ const ModalFormNews: React.FC<ModalProps> = ({
             >
               Ya, Hapus
             </button>
+          </div>
+        </div>
+      )}
+
+      {action === "detail" && item && (
+        <div className="fixed top-0 left-0 flex flex-col justify-between w-full h-screen p-6 overflow-x-hidden overflow-y-auto bg-white dark:bg-gray-900 lg:p-10">
+          <div className="p-6 space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                Judul
+              </label>
+              <p className="text-gray-800 dark:text-gray-100">{item.title}</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                Slug
+              </label>
+              <p className="text-gray-800 dark:text-gray-100">{item.slug}</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                Penulis
+              </label>
+              <p className="text-gray-800 dark:text-gray-100">{item.author}</p>
+            </div>
+
+            {item.image_url && (
+              <div>
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Gambar
+                </label>
+                <img
+                  src={item.image_url}
+                  alt="Gambar berita"
+                  width={600}
+                  height={300}
+                  className="rounded border object-cover"
+                />
+              </div>
+            )}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                Konten
+              </label>
+              <div
+                className="prose dark:prose-invert max-w-none list-decimal list-inside"
+                dangerouslySetInnerHTML={{ __html: item.content }}
+              />
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Status
+                </label>
+                <span
+                  className={`inline-block px-3 py-1 text-sm rounded-full ${
+                    item.status === "published"
+                      ? "bg-green-100 text-green-700"
+                      : item.status === "draft"
+                      ? "bg-yellow-100 text-yellow-700"
+                      : "bg-gray-300 text-gray-700"
+                  }`}
+                >
+                  {item.status}
+                </span>
+              </div>
+
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Disetujui oleh
+                </label>
+                <p className="text-gray-800 dark:text-gray-100">
+                  {item.approved_by || "-"}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}

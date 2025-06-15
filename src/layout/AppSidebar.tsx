@@ -15,6 +15,9 @@ import {
   TaskIcon,
   ShootingStarIcon,
   EnvelopeIcon,
+  ChatIcon,
+  TimeIcon,
+  PaperPlaneIcon
 } from "../icons/index";
 
 type NavItem = {
@@ -85,6 +88,21 @@ const navItems: NavItem[] = [
     icon: <EnvelopeIcon />,
     name: "Jaringan Kantor",
     path: "/jaringan-kantor",
+  },
+  {
+    icon: <TimeIcon />,
+    name: "Lelang",
+    path: "/lelang",
+  },
+  {
+    icon: <PaperPlaneIcon />,
+    name: "Karir",
+    path: "/karir",
+  },
+  {
+    icon: <ChatIcon />,
+    name: "Pengaduan",
+    path: "/pengaduan",
   },
 ];
 
