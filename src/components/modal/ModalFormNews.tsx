@@ -257,21 +257,9 @@ const ModalFormNews: React.FC<ModalProps> = ({
               <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
                 Judul
               </label>
-              <p className="text-gray-800 dark:text-gray-100">{item.title}</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
-                Slug
-              </label>
-              <p className="text-gray-800 dark:text-gray-100">{item.slug}</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
-                Penulis
-              </label>
-              <p className="text-gray-800 dark:text-gray-100">{item.author}</p>
+              <p className="text-gray-800 text-xl font-semibold dark:text-gray-100">
+                {item.title}
+              </p>
             </div>
 
             {item.image_url && (
@@ -299,7 +287,23 @@ const ModalFormNews: React.FC<ModalProps> = ({
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col mt-8 sm:flex-row gap-4">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Slug
+                </label>
+                <p className="text-gray-800 dark:text-gray-100">{item.slug}</p>
+              </div>
+
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Penulis
+                </label>
+                <p className="text-gray-800 dark:text-gray-100">
+                  {item.author}
+                </p>
+              </div>
+
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
                   Status

@@ -95,14 +95,18 @@ const RichTextEditor = ({ name, className }: RichTextEditorProps) => {
         <button
           type="button"
           className={buttonStyle(editor.isActive("heading", { level: 1 }))}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 1 }).run()
+          }
         >
           H1
         </button>
         <button
           type="button"
           className={buttonStyle(editor.isActive("heading", { level: 2 }))}
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
         >
           H2
         </button>
@@ -129,7 +133,10 @@ const RichTextEditor = ({ name, className }: RichTextEditorProps) => {
 
       {/* Editor Content */}
       <div className="rounded-b-md border border-gray-300 p-2 dark:border-gray-700 dark:bg-gray-900">
-        <EditorContent editor={editor} className="prose dark:prose-invert max-w-none" />
+        <EditorContent
+          editor={editor}
+          className="prose dark:prose-invert max-w-none max-h-[400px] overflow-y-auto"
+        />
       </div>
     </div>
   );

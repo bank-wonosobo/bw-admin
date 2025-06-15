@@ -157,7 +157,7 @@ export default function NewsTable() {
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <div
-                          className="line-clamp-3 overflow-hidden text-ellipsis"
+                          className="line-clamp-3 overflow-hidden text-ellipsis "
                           dangerouslySetInnerHTML={{ __html: order.content }}
                         />
                       </TableCell>
