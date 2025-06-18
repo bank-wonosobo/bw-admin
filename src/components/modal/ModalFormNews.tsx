@@ -174,7 +174,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
                   <Label>Judul Berita</Label>
                   <Input
                     id="title"
-                    type="i"
+                    type="text"
                     placeholder="Judul berita"
                     {...register("title")}
                     hint={errors.title?.message}
@@ -262,6 +262,16 @@ const ModalFormNews: React.FC<ModalProps> = ({
               </p>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                Konten
+              </label>
+              <div
+                className="prose dark:prose-invert max-w-none list-decimal list-inside"
+                dangerouslySetInnerHTML={{ __html: item.content }}
+              />
+            </div>
+
             {item.image_url && (
               <div>
                 <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
@@ -277,17 +287,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
               </div>
             )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
-                Konten
-              </label>
-              <div
-                className="prose dark:prose-invert max-w-none list-decimal list-inside"
-                dangerouslySetInnerHTML={{ __html: item.content }}
-              />
-            </div>
-
-            <div className="flex flex-col mt-8 sm:flex-row gap-4">
+            <div className="flex flex-col mt-8 pt-4 sm:flex-row gap-4 border-t-1 border-gray-500">
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
                   Slug

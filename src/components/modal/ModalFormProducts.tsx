@@ -171,7 +171,7 @@ const ModalFormProducts: React.FC<ModalProps> = ({
                   <Label>Nama Produk</Label>
                   <Input
                     id="name"
-                    type="i"
+                    type="text"
                     placeholder="Nama produk"
                     {...register("name")}
                     hint={errors.name?.message}
@@ -183,7 +183,7 @@ const ModalFormProducts: React.FC<ModalProps> = ({
                   <Label>Kategori Produk</Label>
                   <Input
                     id="product_category"
-                    type="i"
+                    type="text"
                     placeholder="Kategori produk"
                     {...register("product_category")}
                     hint={errors.product_category?.message}
@@ -195,7 +195,7 @@ const ModalFormProducts: React.FC<ModalProps> = ({
                   <Label>Tagline</Label>
                   <Input
                     id="tagline"
-                    type="i"
+                    type="text"
                     placeholder="Tagline"
                     {...register("tagline")}
                     hint={errors.tagline?.message}
