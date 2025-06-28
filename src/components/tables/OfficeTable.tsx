@@ -169,10 +169,10 @@ export default function OfficeTable() {
                         {order.longitude}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.image_url ? order.image_url : "-"}
+                        {order.image_url ? <a href={order.image_url}>{order.image_url}</a> : "-"}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.map_link ? order.map_link : "-"}
+                        {order.map_link ? <a href={order.map_link} target="_blank" rel="noopener noreferrer">{order.map_link}</a> : "-"}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
                         {order.phone_number}

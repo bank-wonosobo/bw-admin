@@ -1,9 +1,14 @@
 import axios from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
+const baseURLauth = process.env.NEXT_PUBLIC_AUTH_API_URL;
 
 export const apiV1 = axios.create({
   baseURL: `${baseURL}/admin`,
+});
+
+export const apiV1user = axios.create({
+  baseURL: `${baseURLauth}/users`,
 });
 
 export const apiV1na = axios.create({
