@@ -4,16 +4,19 @@ import Checkbox from "@/components/form/input/Checkbox";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
+import { useLogin } from "@/hooks/useLogin";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import { LoginFormInput, loginSchema } from "@/validation/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export default function SignInForm() {
+  const router = useRouter();
   const methods = useForm<LoginFormInput>({
     resolver: zodResolver(loginSchema),
   });
@@ -31,29 +34,7 @@ export default function SignInForm() {
 
   const queryClient = useQueryClient();
 
-  const { mutate: login, isPending: isPendingCreate } = useMutation({
-    mutationFn: async (data: LoginFormInput) => {
-      const payload = {
-        ...data,
-        device_info: "web",
-      };
-
-      const res = await apiV1user.post(`/login`, payload);
-      return res.data.data;
-    },
-    onError: (err: any) => {
-      console.error("Login Error:", err);
-      const message =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Terjadi kesalahan pengiriman data login.";
-      toast.error(message);
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["banner"] });
-      toast.success("Login berhasil.");
-    },
-  });
+  const { mutate: login, isPending: isPendingCreate } = useLogin();
 
   const onSubmitForm = (data: LoginFormInput) => {
     login(data);

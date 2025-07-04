@@ -7,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function PageWrapper() {
-  return <Page />;
+  return (
+    <PermissionGuard requiredPermission="banner">
+      <Page />;
+    </PermissionGuard>
+  );
 }

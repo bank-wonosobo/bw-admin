@@ -3,6 +3,7 @@ import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import { Metadata } from "next";
 import React from "react";
 import Page from "./PageClient";
+import PermissionGuard from "@/components/PermissionGuard";
 
 export const metadata: Metadata = {
   title: "Bank Wonosobo - Jenis Laporan",
@@ -10,5 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default function PageWrapper() {
-  return <Page />;
+  return (
+    <PermissionGuard requiredPermission="banner">
+      <Page />;
+    </PermissionGuard>
+  );
 }
