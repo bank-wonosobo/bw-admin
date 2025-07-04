@@ -10,6 +10,6 @@ export function useLogout() {
   return () => {
     removeAuthToken();
     queryClient.removeQueries({ queryKey: ["currentUser"] });
-    router.push("/signup");
+    router.push("/signin");
   };
 }
