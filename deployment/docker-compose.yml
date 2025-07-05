@@ -1,0 +1,17 @@
+services:
+  webprofile:
+    image: ${APP_IMAGE}:${APP_TAG}
+    container_name: ${PROJECT_NAME}
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    networks:
+      - webprofile-network
+
+networks:
+  webprofile-network:
+    name: webprofile-network
+    driver: bridge
+    # external: true
