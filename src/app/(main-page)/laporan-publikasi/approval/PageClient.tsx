@@ -2,7 +2,6 @@
 
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import ModalFormReportType from "@/components/modal/ModalFormReportType";
 import ReportApprovalTable from "@/components/tables/ReportApprovalTable";
 
 export default function Page() {

@@ -1,5 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import { apiV1 } from "@/api/api";
+import { useModal } from "@/hooks/useModal";
+import { PencilIcon, TrashBinIcon } from "@/icons/index";
+import { IReportType } from "@/types/ReportType";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import ModalFormReportType from "../modal/ModalFormReportType";
+import Button from "../ui/button/Button";
 import {
   Table,
   TableBody,
@@ -7,13 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { IReportType } from "@/types/ReportType";
-import { QueryClient, useQuery } from "@tanstack/react-query";
-import { apiV1 } from "@/api/api";
-import { TrashBinIcon, PencilIcon } from "@/icons/index";
-import Button from "../ui/button/Button";
-import { useModal } from "@/hooks/useModal";
-import ModalFormReportType from "../modal/ModalFormReportType";
 
 export default function ReportTypeTable() {
   const {

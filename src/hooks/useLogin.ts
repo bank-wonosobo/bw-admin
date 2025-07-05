@@ -2,8 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { apiV1user } from "@/api/api"; // pastikan ini mengarah ke instance axios backend
+import { apiV1user } from "@/api/api";
 import { LoginFormInput } from "@/validation/loginSchema";
+import type { AxiosError } from "axios";
 
 export const useLogin = () => {
   const router = useRouter();
@@ -35,13 +36,16 @@ export const useLogin = () => {
       router.push("/");
     },
 
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       console.error("Login Error:", err);
 
-      const message =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Terjadi kesalahan saat login.";
+      let message = "Terjadi kesalahan saat login.";
+
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosErr = err as AxiosError<{ message?: string }>;
+        message =
+          axiosErr.response?.data?.message || axiosErr.message || message;
+      }
 
       toast.error(message);
     },

@@ -117,7 +117,7 @@ const ModalFormBanner: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: deleteBanner, isPending: isPendingDelete } = useMutation({
+  const { mutate: deleteBanner } = useMutation({
     mutationFn: async () => {
       const res = await apiV1.delete(`/banners/${bannerId}`);
       return res.data;
@@ -198,7 +198,11 @@ const ModalFormBanner: React.FC<ModalProps> = ({
                 >
                   Close
                 </Button>
-                <Button type="submit" size="sm" isLoading={isPendingCreate}>
+                <Button
+                  type="submit"
+                  size="sm"
+                  isLoading={isPendingCreate || isPendingUpdate}
+                >
                   Save Changes
                 </Button>
               </div>

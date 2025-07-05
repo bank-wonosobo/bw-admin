@@ -3,6 +3,7 @@ import { IAnnouncement } from "@/types/Announcement";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
@@ -14,7 +15,6 @@ import {
   TableRow,
 } from "../ui/table";
 import Pagination from "./Pagination";
-import { useState } from "react";
 
 export default function AnnouncementApprovalTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -255,6 +255,7 @@ export default function AnnouncementApprovalTable() {
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                         {order.status === "published" ? (
                           <Button
+                            isLoading={isPendingArchive}
                             onClick={() => onApprove("archived", order.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-yellow-500 hover:bg-yellow-600"
@@ -263,6 +264,7 @@ export default function AnnouncementApprovalTable() {
                           </Button>
                         ) : (
                           <Button
+                            isLoading={isPendingApprove}
                             onClick={() => onApprove("publish", order.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-green-500 hover:bg-green-600"

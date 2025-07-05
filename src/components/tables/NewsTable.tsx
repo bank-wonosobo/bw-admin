@@ -1,6 +1,7 @@
 import { apiV1 } from "@/api/api";
 import { useModal } from "@/hooks/useModal";
 import { PencilIcon, TrashBinIcon } from "@/icons/index";
+import { INews } from "@/types/News";
 import { useQuery } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
@@ -15,8 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { INews } from "@/types/News";
-import DOMPurify from "dompurify";
 import Pagination from "./Pagination";
 
 export default function NewsTable() {

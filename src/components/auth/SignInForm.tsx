@@ -1,22 +1,17 @@
 "use client";
-import { apiV1, apiV1user } from "@/api/api";
 import Checkbox from "@/components/form/input/Checkbox";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import { useLogin } from "@/hooks/useLogin";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
+import { EyeCloseIcon, EyeIcon } from "@/icons";
 import { LoginFormInput, loginSchema } from "@/validation/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 
 export default function SignInForm() {
-  const router = useRouter();
   const methods = useForm<LoginFormInput>({
     resolver: zodResolver(loginSchema),
   });
@@ -31,8 +26,6 @@ export default function SignInForm() {
   useEffect(() => {
     reset();
   }, [reset]);
-
-  const queryClient = useQueryClient();
 
   const { mutate: login, isPending: isPendingCreate } = useLogin();
 
@@ -109,7 +102,12 @@ export default function SignInForm() {
                   </Link>
                 </div>
                 <div>
-                  <Button type="submit" className="w-full" size="sm">
+                  <Button
+                    isLoading={isPendingCreate}
+                    type="submit"
+                    className="w-full"
+                    size="sm"
+                  >
                     Sign in
                   </Button>
                 </div>
