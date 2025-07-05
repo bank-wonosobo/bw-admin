@@ -8,7 +8,7 @@ import BannerTable from "@/components/tables/BannerTable";
 export default function Page() {
   return (
     <div>
-      <PageBreadcrumb pageTitle="Jaringan Kantor" />
+      <PageBreadcrumb pageTitle="Tipe Aduan" />
       <div className="space-y-6">
         <ComponentCard ModalComponent={ModalFormBanner} title="Jaringan Kantor">
           <BannerTable />
