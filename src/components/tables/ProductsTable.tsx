@@ -1,12 +1,10 @@
 import { apiV1na } from "@/api/api";
 import { useModal } from "@/hooks/useModal";
 import { PencilIcon, TrashBinIcon } from "@/icons/index";
+import { IProducts } from "@/types/Products";
 import { useQuery } from "@tanstack/react-query";
-import { format, isValid, parseISO } from "date-fns";
-import { id } from "date-fns/locale";
 import { useState } from "react";
 import ModalFormProducts from "../modal/ModalFormProducts";
-import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
 import {
   Table,
@@ -15,8 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { IProducts } from "@/types/Products";
-import DOMPurify from "dompurify";
 import Pagination from "./Pagination";
 
 export default function ProductsTable() {

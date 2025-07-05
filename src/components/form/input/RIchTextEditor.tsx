@@ -1,10 +1,10 @@
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
-import { useFormContext } from "react-hook-form";
+import Link from "@tiptap/extension-link";
+import Underline from "@tiptap/extension-underline";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
 
 interface RichTextEditorProps {
   name: string;
@@ -32,7 +32,7 @@ const RichTextEditor = ({ name, className }: RichTextEditorProps) => {
     if (editor && content !== editor.getHTML()) {
       editor.commands.setContent(content);
     }
-  }, [content]);
+  }, [content, editor]);
 
   if (!editor) return null;
 

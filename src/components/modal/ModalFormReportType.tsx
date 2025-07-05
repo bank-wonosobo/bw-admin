@@ -1,21 +1,21 @@
 "use client";
-import { Modal } from "../ui/modal";
-import Label from "../form/Label";
-import Input from "../form/input/InputField";
-import Button from "../ui/button/Button";
-import TextArea from "../form/input/TextArea";
-import { useForm } from "react-hook-form";
+import { apiV1 } from "@/api/api";
+import { IReportType } from "@/types/ReportType";
 import {
   ReportTypeFormInput,
   reportTypeSchema,
 } from "@/validation/reportTypeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiV1 } from "@/api/api";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { IReportType } from "@/types/ReportType";
+import Label from "../form/Label";
+import Input from "../form/input/InputField";
+import TextArea from "../form/input/TextArea";
 import DeleteHeader from "../ui/alert/DeleteHeader";
+import Button from "../ui/button/Button";
+import { Modal } from "../ui/modal";
 
 type ModalProps = {
   action?: "create" | "update" | "delete" | "approval" | null;
@@ -96,7 +96,7 @@ const ModalFormReportType: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: deleteReportType, isPending: isPendingDelete } = useMutation({
+  const { mutate: deleteReportType } = useMutation({
     mutationFn: async () => {
       const res = await apiV1.delete(`/report-types/${reportTypeId}`);
       return res.data;
@@ -172,7 +172,11 @@ const ModalFormReportType: React.FC<ModalProps> = ({
               >
                 Close
               </Button>
-              <Button type="submit" size="sm" isLoading={isPendingCreate}>
+              <Button
+                type="submit"
+                size="sm"
+                isLoading={isPendingCreate || isPendingUpdate}
+              >
                 Save Changes
               </Button>
             </div>

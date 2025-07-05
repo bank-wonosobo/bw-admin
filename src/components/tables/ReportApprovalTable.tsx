@@ -1,4 +1,11 @@
-import React, { useState } from "react";
+import { apiV1 } from "@/api/api";
+import { IReports } from "@/types/Reports";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { format, isValid, parseISO } from "date-fns";
+import { id } from "date-fns/locale";
+import { toast } from "react-toastify";
+import Badge from "../ui/badge/Badge";
+import Button from "../ui/button/Button";
 import {
   Table,
   TableBody,
@@ -6,19 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiV1 } from "@/api/api";
-import { TrashBinIcon, PencilIcon } from "@/icons/index";
-import Button from "../ui/button/Button";
-import { useModal } from "@/hooks/useModal";
-import ModalFormReportType from "../modal/ModalFormReportType";
-import Image from "next/image";
-import Badge from "../ui/badge/Badge";
-import { IReports } from "@/types/Reports";
-import { format, isValid, parseISO } from "date-fns";
-import { id } from "date-fns/locale";
-import ModalFormReport from "../modal/ModalFormReport";
-import { toast } from "react-toastify";
 
 export default function ReportApprovalTable() {
   const {
@@ -249,6 +243,7 @@ export default function ReportApprovalTable() {
                     <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                       {order.status === "published" ? (
                         <Button
+                          isLoading={isPendingArchive}
                           onClick={() => onApprove("archived", order.id)}
                           size="xs"
                           className="px-3 text-xs font-normal bg-yellow-500 hover:bg-yellow-600"
@@ -257,6 +252,7 @@ export default function ReportApprovalTable() {
                         </Button>
                       ) : (
                         <Button
+                          isLoading={isPendingApprove}
                           onClick={() => onApprove("publish", order.id)}
                           size="xs"
                           className="px-3 text-xs font-normal bg-green-500 hover:bg-green-600"

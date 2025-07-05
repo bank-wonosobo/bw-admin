@@ -11,13 +11,13 @@ import { useEffect } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Label from "../form/Label";
+import DatePicker from "../form/date-picker";
 import FileInput from "../form/input/FileInput";
 import Input from "../form/input/InputField";
 import RichTextEditor from "../form/input/RIchTextEditor";
 import DeleteHeader from "../ui/alert/DeleteHeader";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
-import DatePicker from "../form/date-picker";
 
 type ModalProps = {
   action?: "create" | "update" | "delete" | "approval" | null;
@@ -133,26 +133,25 @@ const ModalFormAnnouncement: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: deleteAnnouncement, isPending: isPendingDelete } =
-    useMutation({
-      mutationFn: async () => {
-        const res = await apiV1.delete(`/announcements/${announcementId}`);
-        return res.data;
-      },
-      onError: (err: any) => {
-        console.error("Delete Error:", err);
-        const message =
-          err?.response?.data?.message ||
-          err?.message ||
-          "Terjadi kesalahan saat menghapus data.";
-        toast.error(message);
-      },
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ["announcement"] });
-        toast.success("Berhasil menghapus berita.");
-        closeModal();
-      },
-    });
+  const { mutate: deleteAnnouncement } = useMutation({
+    mutationFn: async () => {
+      const res = await apiV1.delete(`/announcements/${announcementId}`);
+      return res.data;
+    },
+    onError: (err: any) => {
+      console.error("Delete Error:", err);
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Terjadi kesalahan saat menghapus data.";
+      toast.error(message);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["announcement"] });
+      toast.success("Berhasil menghapus berita.");
+      closeModal();
+    },
+  });
 
   const onSubmitForm = (data: AnnouncementFormInput) => {
     if (action === "create") {
@@ -267,7 +266,11 @@ const ModalFormAnnouncement: React.FC<ModalProps> = ({
                 >
                   Close
                 </Button>
-                <Button type="submit" size="sm" isLoading={isPendingCreate}>
+                <Button
+                  type="submit"
+                  size="sm"
+                  isLoading={isPendingCreate || isPendingUpdate}
+                >
                   Save Changes
                 </Button>
               </div>

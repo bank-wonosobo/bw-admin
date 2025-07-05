@@ -1,4 +1,14 @@
-import React, { useState } from "react";
+import { apiV1 } from "@/api/api";
+import { useModal } from "@/hooks/useModal";
+import { PencilIcon, TrashBinIcon } from "@/icons/index";
+import { IReports } from "@/types/Reports";
+import { useQuery } from "@tanstack/react-query";
+import { format, isValid, parseISO } from "date-fns";
+import { id } from "date-fns/locale";
+import { useState } from "react";
+import ModalFormReport from "../modal/ModalFormReport";
+import Badge from "../ui/badge/Badge";
+import Button from "../ui/button/Button";
 import {
   Table,
   TableBody,
@@ -6,18 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { QueryClient, useQuery } from "@tanstack/react-query";
-import { apiV1 } from "@/api/api";
-import { TrashBinIcon, PencilIcon } from "@/icons/index";
-import Button from "../ui/button/Button";
-import { useModal } from "@/hooks/useModal";
-import ModalFormReportType from "../modal/ModalFormReportType";
-import Image from "next/image";
-import Badge from "../ui/badge/Badge";
-import { IReports } from "@/types/Reports";
-import { format, isValid, parseISO } from "date-fns";
-import { id } from "date-fns/locale";
-import ModalFormReport from "../modal/ModalFormReport";
 import Pagination from "./Pagination";
 
 export default function ReportTable() {

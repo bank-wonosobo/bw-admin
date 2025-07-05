@@ -5,17 +5,15 @@ import { NewsFormInput, newsSchema } from "@/validation/newsSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Label from "../form/Label";
-import DatePicker from "../form/date-picker";
+import FileInput from "../form/input/FileInput";
 import Input from "../form/input/InputField";
-import TextArea from "../form/input/TextArea";
+import RichTextEditor from "../form/input/RIchTextEditor";
 import DeleteHeader from "../ui/alert/DeleteHeader";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
-import FileInput from "../form/input/FileInput";
-import RichTextEditor from "../form/input/RIchTextEditor";
 import Image from "next/image";
 
 type ModalProps = {
@@ -125,7 +123,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: deleteNews, isPending: isPendingDelete } = useMutation({
+  const { mutate: deleteNews } = useMutation({
     mutationFn: async () => {
       const res = await apiV1.delete(`/news/${newsId}`);
       return res.data;
@@ -219,7 +217,11 @@ const ModalFormNews: React.FC<ModalProps> = ({
                 >
                   Close
                 </Button>
-                <Button type="submit" size="sm" isLoading={isPendingCreate}>
+                <Button
+                  type="submit"
+                  size="sm"
+                  isLoading={isPendingCreate || isPendingUpdate}
+                >
                   Save Changes
                 </Button>
               </div>
@@ -277,12 +279,13 @@ const ModalFormNews: React.FC<ModalProps> = ({
                 <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
                   Gambar
                 </label>
-                <img
+                <Image
                   src={item.image_url}
                   alt="Gambar berita"
                   width={600}
                   height={300}
                   className="rounded border object-cover"
+                  unoptimized
                 />
               </div>
             )}
