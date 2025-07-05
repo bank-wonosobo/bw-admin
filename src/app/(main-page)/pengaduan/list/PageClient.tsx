@@ -2,16 +2,15 @@
 
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import ModalFormBanner from "@/components/modal/ModalFormBanner";
-import BannerTable from "@/components/tables/BannerTable";
+import ComplainTable from "@/components/tables/ComplaintTable";
 
 export default function Page() {
   return (
     <div>
-      <PageBreadcrumb pageTitle="Jaringan Kantor" />
+      <PageBreadcrumb pageTitle="Pengaduan" />
       <div className="space-y-6">
-        <ComponentCard ModalComponent={ModalFormBanner} title="Jaringan Kantor">
-          <BannerTable />
+        <ComponentCard title="List Pengaduan">
+          <ComplainTable />
         </ComponentCard>
       </div>
     </div>

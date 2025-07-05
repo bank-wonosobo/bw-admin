@@ -91,6 +91,18 @@ const navItems: NavItem[] = [
     path: "/jaringan-kantor",
   },
   {
+    icon: <ChatIcon />,
+    name: "Pengaduan",
+    subItems: [
+      {
+        name: "Pengaduan",
+        path: "/pengaduan/list",
+        pro: false,
+      },
+      { name: "Tipe Aduan", path: "/pengaduan/type", pro: false },
+    ],
+  },
+  {
     icon: <TimeIcon />,
     name: "Lelang",
     path: "/lelang",
@@ -99,11 +111,6 @@ const navItems: NavItem[] = [
     icon: <PaperPlaneIcon />,
     name: "Karir",
     path: "/karir",
-  },
-  {
-    icon: <ChatIcon />,
-    name: "Pengaduan",
-    path: "/pengaduan",
   },
 ];
 

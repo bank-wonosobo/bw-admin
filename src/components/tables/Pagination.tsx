@@ -9,13 +9,23 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
-  const pagesAroundCurrent = Array.from(
-    { length: Math.min(3, totalPages) },
-    (_, i) => i + Math.max(currentPage - 1, 1)
-  );
+  const getVisiblePages = () => {
+    const pages = [];
+
+    const start = Math.max(1, currentPage - 1);
+    const end = Math.min(totalPages, currentPage + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
+
+  const visiblePages = getVisiblePages();
 
   return (
-    <div className="flex items-center ">
+    <div className="flex items-center">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -24,8 +34,8 @@ const Pagination: React.FC<PaginationProps> = ({
         Previous
       </button>
       <div className="flex items-center gap-2">
-        {currentPage > 3 && <span className="px-2">...</span>}
-        {pagesAroundCurrent.map((page) => (
+        {visiblePages[0] > 1 && <span className="px-2">...</span>}
+        {visiblePages.map((page) => (
           <button
             key={page}
             onClick={() => onPageChange(page)}
@@ -38,7 +48,9 @@ const Pagination: React.FC<PaginationProps> = ({
             {page}
           </button>
         ))}
-        {currentPage < totalPages - 2 && <span className="px-2">...</span>}
+        {visiblePages[visiblePages.length - 1] < totalPages && (
+          <span className="px-2">...</span>
+        )}
       </div>
       <button
         onClick={() => onPageChange(currentPage + 1)}
