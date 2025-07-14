@@ -1,5 +1,6 @@
 "use client";
 
+import Authorization from "@/components/Authorization";
 import PermissionGuard from "@/components/PermissionGuard";
 import { useSidebar } from "@/context/SidebarContext";
 import AppHeader from "@/layout/AppHeader";
@@ -21,7 +22,7 @@ export default function AdminLayout({
     : "lg:ml-[90px]";
 
   return (
-    <PermissionGuard>
+    <Authorization>
       <div className="min-h-screen xl:flex">
         <AppSidebar />
         <Backdrop />
@@ -34,6 +35,6 @@ export default function AdminLayout({
           </div>
         </div>
       </div>
-    </PermissionGuard>
+    </Authorization>
   );
 }

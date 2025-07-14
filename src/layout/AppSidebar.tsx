@@ -20,12 +20,20 @@ import {
   TimeIcon,
   PaperPlaneIcon,
 } from "../icons/index";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type NavItem = {
   name: string;
   icon: React.ReactNode;
   path?: string;
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  subItems?: {
+    name: string;
+    path: string;
+    pro?: boolean;
+    new?: boolean;
+    permission?: string;
+  }[];
+  permission?: string;
 };
 
 const navItems: NavItem[] = [
@@ -33,20 +41,29 @@ const navItems: NavItem[] = [
     icon: <GridIcon />,
     name: "Dashboard",
     path: "/",
+    permission: "dashboard:view",
   },
   {
     name: "Laporan Publikasi",
     icon: <FileIcon />,
+    permission: "report:view",
     subItems: [
-      { name: "Publikasi", path: "/laporan-publikasi/publikasi", pro: false },
+      {
+        name: "Publikasi",
+        path: "/laporan-publikasi/publikasi",
+        permission: "report:view",
+        pro: false,
+      },
       {
         name: "Jenis Laporan",
         path: "/laporan-publikasi/jenis-laporan",
+        permission: "report-type:view",
         pro: false,
       },
       {
         name: "Perseujuan / Approval",
         path: "/laporan-publikasi/approval",
+        permission: "report-approval:view",
         pro: false,
       },
     ],
@@ -54,11 +71,18 @@ const navItems: NavItem[] = [
   {
     name: "Berita",
     icon: <ShootingStarIcon />,
+    permission: "news:view",
     subItems: [
-      { name: "List Berita", path: "/berita/list", pro: false },
+      {
+        name: "List Berita",
+        path: "/berita/list",
+        permission: "news:view",
+        pro: false,
+      },
       {
         name: "Perseujuan / Approval",
         path: "/berita/approval",
+        permission: "news-approval:view",
         pro: false,
       },
     ],
@@ -66,11 +90,18 @@ const navItems: NavItem[] = [
   {
     name: "Pengumuman",
     icon: <InfoIcon />,
+    permission: "announcement:view",
     subItems: [
-      { name: "List Pengumuman", path: "/pengumuman/list", pro: false },
+      {
+        name: "List Pengumuman",
+        path: "/pengumuman/list",
+        permission: "announcement:view",
+        pro: false,
+      },
       {
         name: "Perseujuan / Approval",
         path: "/pengumuman/approval",
+        permission: "announcement-approval:view",
         pro: false,
       },
     ],
@@ -79,39 +110,51 @@ const navItems: NavItem[] = [
     icon: <BoxCubeIcon />,
     name: "Produk dan Layanan",
     path: "/produk-dan-layanan",
+    permission: "product:view",
   },
   {
     icon: <TaskIcon />,
     name: "Banner",
     path: "/banner",
+    permission: "banner:view",
   },
   {
     icon: <EnvelopeIcon />,
     name: "Jaringan Kantor",
     path: "/jaringan-kantor",
+    permission: "office:view",
   },
   {
     icon: <ChatIcon />,
     name: "Pengaduan",
+    permission: "complaint:view",
     subItems: [
       {
         name: "Pengaduan",
         path: "/pengaduan/list",
+        permission: "complaint:view",
         pro: false,
       },
-      { name: "Tipe Aduan", path: "/pengaduan/type", pro: false },
+      {
+        name: "Tipe Aduan",
+        path: "/pengaduan/type",
+        permission: "complaint-type:view",
+        pro: false,
+      },
     ],
   },
-  {
-    icon: <TimeIcon />,
-    name: "Lelang",
-    path: "/lelang",
-  },
-  {
-    icon: <PaperPlaneIcon />,
-    name: "Karir",
-    path: "/karir",
-  },
+  // {
+  //   icon: <TimeIcon />,
+  //   name: "Lelang",
+  //   path: "/lelang",
+  //   permission: "report:view",
+  // },
+  // {
+  //   icon: <PaperPlaneIcon />,
+  //   name: "Karir",
+  //   path: "/karir",
+  //   permission: "report:view",
+  // },
 ];
 
 const othersItems: NavItem[] = [
@@ -126,6 +169,43 @@ const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
   const logout = useLogout();
+
+  const { data: user, isLoading } = useCurrentUser();
+
+  const filterNavItemsByPermission = useCallback(
+    (items: NavItem[]): NavItem[] => {
+      if (!user || !user.permissions) return [];
+
+      return items
+        .map((item) => {
+          // Jika tidak ada permission khusus, tampilkan default
+          if (!item.permission && !item.subItems) return item;
+
+          // Jika ada permission di main item
+          if (item.permission && !user.permissions.includes(item.permission)) {
+            return null;
+          }
+
+          // Jika punya subItems, filter juga subItem berdasarkan permission
+          if (item.subItems) {
+            const filteredSubItems = item.subItems.filter(
+              (sub) =>
+                !sub.permission || user.permissions.includes(sub.permission)
+            );
+            if (filteredSubItems.length === 0) return null;
+
+            return {
+              ...item,
+              subItems: filteredSubItems,
+            };
+          }
+
+          return item;
+        })
+        .filter(Boolean) as NavItem[];
+    },
+    [user]
+  );
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -391,7 +471,7 @@ const AppSidebar: React.FC = () => {
                   <HorizontaLDots />
                 )}
               </h2>
-              {renderMenuItems(navItems, "main")}
+              {renderMenuItems(filterNavItemsByPermission(navItems), "main")}
             </div>
 
             <div className="">
@@ -408,7 +488,10 @@ const AppSidebar: React.FC = () => {
                   <HorizontaLDots />
                 )}
               </h2>
-              {renderMenuItems(othersItems, "others")}
+              {renderMenuItems(
+                filterNavItemsByPermission(othersItems),
+                "others"
+              )}
             </div>
           </div>
         </nav>

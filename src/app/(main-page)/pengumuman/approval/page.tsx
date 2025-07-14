@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Page from "./PageClient";
+import PermissionGuard from "@/components/PermissionGuard";
 
 export const metadata: Metadata = {
   title: "Bank Wonosobo - Approval Pengumuman",
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function PageWrapper() {
-  return <Page />;
+  return (
+    <PermissionGuard requiredPermission="announcement-approval:view">
+      <Page />
+    </PermissionGuard>
+  );
 }
