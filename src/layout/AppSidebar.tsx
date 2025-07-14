@@ -1,26 +1,24 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useSidebar } from "../context/SidebarContext";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useLogout } from "@/hooks/useLogout";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useSidebar } from "../context/SidebarContext";
 import {
   BoxCubeIcon,
+  ChatIcon,
   ChevronDownIcon,
+  EnvelopeIcon,
+  FileIcon,
   GridIcon,
   HorizontaLDots,
-  PlugInIcon,
-  FileIcon,
   InfoIcon,
-  TaskIcon,
+  PlugInIcon,
   ShootingStarIcon,
-  EnvelopeIcon,
-  ChatIcon,
-  TimeIcon,
-  PaperPlaneIcon,
+  TaskIcon,
 } from "../icons/index";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type NavItem = {
   name: string;
@@ -170,7 +168,7 @@ const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const logout = useLogout();
 
-  const { data: user, isLoading } = useCurrentUser();
+  const { data: user } = useCurrentUser();
 
   const filterNavItemsByPermission = useCallback(
     (items: NavItem[]): NavItem[] => {
@@ -178,15 +176,12 @@ const AppSidebar: React.FC = () => {
 
       return items
         .map((item) => {
-          // Jika tidak ada permission khusus, tampilkan default
           if (!item.permission && !item.subItems) return item;
 
-          // Jika ada permission di main item
           if (item.permission && !user.permissions.includes(item.permission)) {
             return null;
           }
 
-          // Jika punya subItems, filter juga subItem berdasarkan permission
           if (item.subItems) {
             const filteredSubItems = item.subItems.filter(
               (sub) =>

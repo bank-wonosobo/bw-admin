@@ -1,7 +1,6 @@
 "use client";
 
 import Authorization from "@/components/Authorization";
-import PermissionGuard from "@/components/PermissionGuard";
 import { useSidebar } from "@/context/SidebarContext";
 import AppHeader from "@/layout/AppHeader";
 import AppSidebar from "@/layout/AppSidebar";

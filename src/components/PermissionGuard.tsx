@@ -4,7 +4,6 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import PageLoading from "./PageLoading";
-import NotFound from "@/app/not-found";
 
 export default function PermissionGuard({
   requiredPermission,
