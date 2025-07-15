@@ -44,8 +44,6 @@ const ModalFormNews: React.FC<ModalProps> = ({
 
   const queryClient = useQueryClient();
 
-  console.log("======", item);
-
   useEffect(() => {
     if (isOpen) {
       if (action === "update" && item) {

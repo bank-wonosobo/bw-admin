@@ -192,8 +192,14 @@ export default function ReportTable() {
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                         {order.quarter ?? "-"}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.fileurl ? order.fileurl : "File kosong"}
+                      <TableCell className="px-4 py-3  text-start text-theme-sm">
+                        {order.fileurl ? (
+                          <a href={order.fileurl} className="text-blue-500">
+                            Lihat File
+                          </a>
+                        ) : (
+                          <p className="text-gray-500 italic">File kosong</p>
+                        )}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                         {order.version}
