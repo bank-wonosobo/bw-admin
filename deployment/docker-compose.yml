@@ -1,17 +1,17 @@
 services:
-  webprofile:
+  adminer:
     image: ${APP_IMAGE}:${APP_TAG}
     container_name: ${PROJECT_NAME}
     restart: always
     ports:
-      - "3000:3000"
+      - "${PORT_PUBLISH}:${PORT_IMAGE}"
     env_file:
       - .env
     networks:
-      - webprofile-network
+      - adminer-network
 
 networks:
-  webprofile-network:
-    name: webprofile-network
+  adminer-network:
+    name: adminer-network
     driver: bridge
     # external: true
