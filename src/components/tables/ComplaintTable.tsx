@@ -216,10 +216,17 @@ export default function ReportApprovalTable() {
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                         {complain.description}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {complain.evidence_url
-                          ? complain.evidence_url
-                          : "File kosong"}
+                      <TableCell className="px-4 py-3  text-start text-theme-sm">
+                        {complain.evidence_url ? (
+                          <a
+                            href={complain.evidence_url}
+                            className="text-blue-500"
+                          >
+                            Lihat Bukti
+                          </a>
+                        ) : (
+                          <p className="text-gray-500 italic">Bukti kosong</p>
+                        )}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                         {complain.reporter_name}
