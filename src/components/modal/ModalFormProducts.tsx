@@ -123,7 +123,7 @@ const ModalFormProducts: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: deleteProducts, isPending: isPendingDelete } = useMutation({
+  const { mutate: deleteProducts } = useMutation({
     mutationFn: async () => {
       const res = await apiV1na.delete(`/products/${productsId}`);
       return res.data;
@@ -228,7 +228,11 @@ const ModalFormProducts: React.FC<ModalProps> = ({
                 >
                   Close
                 </Button>
-                <Button type="submit" size="sm" isLoading={isPendingCreate}>
+                <Button
+                  type="submit"
+                  size="sm"
+                  isLoading={isPendingCreate || isPendingUpdate}
+                >
                   Save Changes
                 </Button>
               </div>

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { useFormContext } from "react-hook-form";
 
 interface FileInputProps {
@@ -8,13 +8,11 @@ interface FileInputProps {
 
 const FileInput: FC<FileInputProps> = ({ name, className }) => {
   const { setValue } = useFormContext();
-  const [fileName, setFileName] = useState<string>("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setValue(name, file); // penting: hanya simpan File, bukan FileList
-      setFileName(file.name);
+      setValue(name, file);
     }
   };
 

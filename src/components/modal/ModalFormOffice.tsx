@@ -10,11 +10,10 @@ import { toast } from "react-toastify";
 import Label from "../form/Label";
 import FileInput from "../form/input/FileInput";
 import Input from "../form/input/InputField";
-import RichTextEditor from "../form/input/RIchTextEditor";
+import TextArea from "../form/input/TextArea";
 import DeleteHeader from "../ui/alert/DeleteHeader";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
-import TextArea from "../form/input/TextArea";
 
 type ModalProps = {
   action?: "create" | "update" | "delete" | "approval" | null;
@@ -74,14 +73,13 @@ const ModalFormOffice: React.FC<ModalProps> = ({
 
       if (data.image) {
         formData.append("image", data.image);
-      }      
+      }
 
       const res = await apiV1na.post(`/offices`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      
 
       return res.data.data;
     },
@@ -133,7 +131,7 @@ const ModalFormOffice: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: deleteOffice, isPending: isPendingDelete } = useMutation({
+  const { mutate: deleteOffice } = useMutation({
     mutationFn: async () => {
       const res = await apiV1na.delete(`/offices/${officeId}`);
       return res.data;
@@ -275,7 +273,11 @@ const ModalFormOffice: React.FC<ModalProps> = ({
                 >
                   Close
                 </Button>
-                <Button type="submit" size="sm" isLoading={isPendingCreate || isPendingUpdate}>
+                <Button
+                  type="submit"
+                  size="sm"
+                  isLoading={isPendingCreate || isPendingUpdate}
+                >
                   Save Changes
                 </Button>
               </div>

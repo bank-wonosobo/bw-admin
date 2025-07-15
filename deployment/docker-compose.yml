@@ -1,0 +1,17 @@
+services:
+  adminer:
+    image: ${APP_IMAGE}:${APP_TAG}
+    container_name: ${PROJECT_NAME}
+    restart: always
+    ports:
+      - "${PORT_PUBLISH}:${PORT_IMAGE}"
+    env_file:
+      - .env
+    networks:
+      - adminer-network
+
+networks:
+  adminer-network:
+    name: adminer-network
+    driver: bridge
+    # external: true

@@ -1,13 +1,10 @@
-import { apiV1, apiV1na } from "@/api/api";
+import { apiV1na } from "@/api/api";
 import { useModal } from "@/hooks/useModal";
 import { PencilIcon, TrashBinIcon } from "@/icons/index";
 import { IOffice } from "@/types/Office";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { format, isValid, parseISO } from "date-fns";
-import { id } from "date-fns/locale";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import ModalFormOffice from "../modal/ModalFormOffice";
-import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
 import {
   Table,
@@ -17,13 +14,10 @@ import {
   TableRow,
 } from "../ui/table";
 import Pagination from "./Pagination";
-import { toast } from "react-toastify";
 
 export default function OfficeTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
-
-  const queryClient = useQueryClient();
 
   const {
     data = [],
@@ -57,26 +51,6 @@ export default function OfficeTable() {
     }
     openModal();
   }
-
-  const { mutate: activateOffice, isPending: isPendingActivate } = useMutation({
-    mutationFn: async (officeId: string) => {
-      const res = await apiV1.put(`/offices/${officeId}/activate`);
-      return res.data;
-    },
-    onError: (err: any) => {
-      console.error("Activate Error:", err);
-      const message =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Terjadi kesalahan saat merubah status aktivasi data.";
-      toast.error(message);
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["office"] });
-      toast.success("Berhasil merubah status aktivasi office.");
-      closeModal();
-    },
-  });
 
   if (isLoading)
     return (
@@ -169,10 +143,24 @@ export default function OfficeTable() {
                         {order.longitude}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.image_url ? order.image_url : "-"}
+                        {order.image_url ? (
+                          <a href={order.image_url}>{order.image_url}</a>
+                        ) : (
+                          "-"
+                        )}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.map_link ? order.map_link : "-"}
+                        {order.map_link ? (
+                          <a
+                            href={order.map_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {order.map_link}
+                          </a>
+                        ) : (
+                          "-"
+                        )}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
                         {order.phone_number}

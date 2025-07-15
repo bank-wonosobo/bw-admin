@@ -3,9 +3,8 @@ import { useModal } from "@/hooks/useModal";
 import { PencilIcon, TrashBinIcon } from "@/icons/index";
 import { IBanner } from "@/types/Banner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { format, isValid, parseISO } from "date-fns";
-import { id } from "date-fns/locale";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import ModalFormBanner from "../modal/ModalFormBanner";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
@@ -17,7 +16,6 @@ import {
   TableRow,
 } from "../ui/table";
 import Pagination from "./Pagination";
-import { toast } from "react-toastify";
 
 export default function BannerTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -168,6 +166,7 @@ export default function BannerTable() {
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                         {order.is_active ? (
                           <Button
+                            isLoading={isPendingActivate}
                             onClick={() => activateBanner(order.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-yellow-500 hover:bg-yellow-600"
@@ -176,6 +175,7 @@ export default function BannerTable() {
                           </Button>
                         ) : (
                           <Button
+                            isLoading={isPendingActivate}
                             onClick={() => activateBanner(order.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-green-500 hover:bg-green-600"

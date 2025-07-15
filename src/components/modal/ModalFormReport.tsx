@@ -1,23 +1,22 @@
 "use client";
-import { Modal } from "../ui/modal";
-import Label from "../form/Label";
-import Input from "../form/input/InputField";
-import Button from "../ui/button/Button";
-import TextArea from "../form/input/TextArea";
-import { Controller, useForm, FormProvider } from "react-hook-form";
+import { apiV1 } from "@/api/api";
+import { ChevronDownIcon } from "@/icons";
+import { IReportType } from "@/types/ReportType";
+import { IReports } from "@/types/Reports";
 import { ReportFormInput, reportSchema } from "@/validation/reportSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiV1 } from "@/api/api";
+import { useEffect, useState } from "react";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { IReports } from "@/types/Reports";
-import DeleteHeader from "../ui/alert/DeleteHeader";
-import DatePicker from "../form/date-picker";
-import { useState } from "react";
-import { IReportType } from "@/types/ReportType";
+import Label from "../form/Label";
 import Select from "../form/Select";
-import { ChevronDownIcon } from "@/icons";
+import DatePicker from "../form/date-picker";
+import Input from "../form/input/InputField";
+import TextArea from "../form/input/TextArea";
+import DeleteHeader from "../ui/alert/DeleteHeader";
+import Button from "../ui/button/Button";
+import { Modal } from "../ui/modal";
 
 type ModalProps = {
   action?: "create" | "update" | "delete" | "approval" | null;
@@ -53,9 +52,9 @@ const ModalFormReport: React.FC<ModalProps> = ({
     label: type.name,
   }));
 
-  const handleSelectChange = (value: string) => {
-    console.log("Selected value:", value);
-  };
+  // const handleSelectChange = (value: string) => {
+  //   console.log("Selected value:", value);
+  // };
 
   useEffect(() => {
     const fetchReportTypes = async () => {
@@ -144,7 +143,7 @@ const ModalFormReport: React.FC<ModalProps> = ({
     },
   });
 
-  const { mutate: deleteReport, isPending: isPendingDelete } = useMutation({
+  const { mutate: deleteReport } = useMutation({
     mutationFn: async () => {
       const res = await apiV1.delete(`/reports/${reportId}`);
       return res.data;
@@ -296,7 +295,11 @@ const ModalFormReport: React.FC<ModalProps> = ({
                 >
                   Close
                 </Button>
-                <Button type="submit" size="sm" isLoading={isPendingCreate}>
+                <Button
+                  type="submit"
+                  size="sm"
+                  isLoading={isPendingCreate || isPendingUpdate}
+                >
                   Save Changes
                 </Button>
               </div>

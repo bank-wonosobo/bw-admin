@@ -1,11 +1,7 @@
 "use client";
 import { useModal } from "@/hooks/useModal";
-import Link from "next/link";
 import React from "react";
-import Label from "../form/Label";
-import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
-import { Modal } from "../ui/modal";
 
 type ComponentCardProps = {
   title: string;
