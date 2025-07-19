@@ -27,7 +27,7 @@ const AppHeader: React.FC = () => {
     setApplicationMenuOpen(!isApplicationMenuOpen);
   };
   const inputRef = useRef<HTMLInputElement>(null);
-  const { search, setSearch } = useSearch();
+  const { setSearch } = useSearch();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

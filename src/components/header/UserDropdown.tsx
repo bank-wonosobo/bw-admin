@@ -1,11 +1,8 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
-import { Dropdown } from "../ui/dropdown/Dropdown";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useLogout } from "@/hooks/useLogout";
+import React, { useState } from "react";
+import { Dropdown } from "../ui/dropdown/Dropdown";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +16,7 @@ export default function UserDropdown() {
     setIsOpen(false);
   }
 
-  const { data: user, isLoading } = useCurrentUser();
+  const { data: user } = useCurrentUser();
   const logout = useLogout();
 
   return (
