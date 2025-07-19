@@ -15,6 +15,8 @@ import {
   TableRow,
 } from "../ui/table";
 import Pagination from "./Pagination";
+import { useModal } from "@/hooks/useModal";
+import ModalFormNews from "../modal/ModalFormNews";
 
 export default function NewsApprovalTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -83,6 +85,24 @@ export default function NewsApprovalTable() {
       archive(reportId);
     }
   };
+
+  const { isOpen, openModal, closeModal } = useModal();
+  const [action, setAction] = useState<any>(null);
+  const [newsId, setNewsId] = useState<any>(null);
+  const [item, setItem] = useState<any>(null);
+
+  function showModal(act: any, id: any, item?: INews[]) {
+    setAction("detail");
+    setNewsId(id);
+
+    if (item) {
+      const selected = item.find((item) => item.id === id);
+      setItem(selected ?? null);
+    } else {
+      setItem(null);
+    }
+    openModal();
+  }
 
   if (isLoading)
     return (
@@ -160,6 +180,12 @@ export default function NewsApprovalTable() {
                   >
                     Aksi
                   </TableCell>
+                  <TableCell
+                    isHeader
+                    className="px-5 py-3 font-medium text-gray-500 text-center text-theme-xs dark:text-gray-400"
+                  >
+                    Detail
+                  </TableCell>
                 </TableRow>
               </TableHeader>
 
@@ -175,7 +201,10 @@ export default function NewsApprovalTable() {
                         {news.slug}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {news.content}
+                        <div
+                          className="line-clamp-3 overflow-hidden text-ellipsis "
+                          dangerouslySetInnerHTML={{ __html: news.content }}
+                        />
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                         {news.author}
@@ -235,6 +264,16 @@ export default function NewsApprovalTable() {
                           </Button>
                         )}
                       </TableCell>
+                      <TableCell className="w-[50px] text-center text-theme-sm px-4">
+                        <div className="flex justify-center gap-2">
+                          <p
+                            onClick={() => showModal("detail", news.id, data)}
+                            className="text-yellow-500 hover:text-yellow-600 font-bold cursor-pointer"
+                          >
+                            <p className="font-light">Lihat Detail</p>
+                          </p>
+                        </div>
+                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
@@ -242,6 +281,13 @@ export default function NewsApprovalTable() {
           </div>
         </div>
       </div>
+      <ModalFormNews
+        isOpen={isOpen}
+        action={action}
+        newsId={newsId}
+        closeModal={closeModal}
+        item={item}
+      />
       <div className="flex justify-end mt-4">
         <Pagination
           currentPage={currentPage}

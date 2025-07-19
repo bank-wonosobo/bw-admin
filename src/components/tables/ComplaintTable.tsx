@@ -14,21 +14,35 @@ import {
   TableRow,
 } from "../ui/table";
 import Pagination from "./Pagination";
-import { useState } from "react";
+import { useSearch } from "@/hooks/useSearch";
+import { useEffect, useState } from "react";
 
 export default function ReportApprovalTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const { search } = useSearch();
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  console.log(search);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   const {
     data = [],
     isLoading,
     isError,
   } = useQuery<IComplaint[]>({
-    queryKey: ["complaints", currentPage],
+    queryKey: ["complaints", currentPage, debouncedSearch],
     queryFn: async () => {
       const response = await apiV1.get("/complaints", {
-        params: { page: currentPage },
+        params: { page: currentPage, key: debouncedSearch },
       });
       setTotalPage(response.data.total_page);
       return response.data.data;
@@ -97,6 +111,12 @@ export default function ReportApprovalTable() {
     return (
       <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
         Terjadi kesalahan saat mengambil data.
+      </p>
+    );
+  if (!data)
+    return (
+      <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
+        Data tidak ditemukan.
       </p>
     );
 
