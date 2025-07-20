@@ -44,8 +44,6 @@ const ModalFormNews: React.FC<ModalProps> = ({
 
   const queryClient = useQueryClient();
 
-  console.log("======", item);
-
   useEffect(() => {
     if (isOpen) {
       if (action === "update" && item) {
@@ -256,7 +254,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
         <div className="fixed top-0 left-0 flex flex-col justify-between w-full h-screen p-6 overflow-x-hidden overflow-y-auto bg-white dark:bg-gray-900 lg:p-10">
           <div className="p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+              <label className="block italic text-sm font-medium text-gray-600 dark:text-gray-300">
                 Judul
               </label>
               <p className="text-gray-800 text-xl font-semibold dark:text-gray-100">
@@ -265,7 +263,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+              <label className="block italic text-sm font-medium text-gray-600 dark:text-gray-300">
                 Konten
               </label>
               <div
@@ -276,7 +274,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
 
             {item.image_url && (
               <div>
-                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                <label className="block italic text-sm font-medium text-gray-600 dark:text-gray-300">
                   Gambar
                 </label>
                 <Image
@@ -290,16 +288,16 @@ const ModalFormNews: React.FC<ModalProps> = ({
               </div>
             )}
 
-            <div className="flex flex-col mt-8 pt-4 sm:flex-row gap-4 border-t-1 border-gray-500">
+            <div className="flex flex-col mt-8 pt-4 sm:flex-row gap-4 justify-between bg-gray-100 dark:bg-blue-light-950  rounded-xl p-4">
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                <label className="block italic under text-sm font-medium text-gray-600 dark:text-gray-300">
                   Slug
                 </label>
                 <p className="text-gray-800 dark:text-gray-100">{item.slug}</p>
               </div>
 
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                <label className="block italic under text-sm font-medium text-gray-600 dark:text-gray-300">
                   Penulis
                 </label>
                 <p className="text-gray-800 dark:text-gray-100">
@@ -308,7 +306,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
               </div>
 
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                <label className="block italic under text-sm font-medium text-gray-600 dark:text-gray-300">
                   Status
                 </label>
                 <span
@@ -325,7 +323,7 @@ const ModalFormNews: React.FC<ModalProps> = ({
               </div>
 
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                <label className="block italic under text-sm font-medium text-gray-600 dark:text-gray-300">
                   Disetujui oleh
                 </label>
                 <p className="text-gray-800 dark:text-gray-100">

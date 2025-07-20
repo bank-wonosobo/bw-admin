@@ -92,24 +92,24 @@ export default function ReportTypeTable() {
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
               {Array.isArray(data) &&
-                data.map((order) => (
-                  <TableRow key={order.id}>
+                data.map((report) => (
+                  <TableRow key={report.id}>
                     <TableCell className="w-[100px] break-words whitespace-normal px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
-                      {order.name}
+                      {report.name}
                     </TableCell>
                     <TableCell className="w-[300px] break-words whitespace-normal px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {order.description}
+                      {report.description}
                     </TableCell>
                     <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400">
                       <div className="flex justify-center gap-2">
                         <Button
-                          onClick={() => showModal("update", order.id, data)}
+                          onClick={() => showModal("update", report.id, data)}
                           size="xs"
                         >
                           <PencilIcon />
                         </Button>
                         <Button
-                          onClick={() => showModal("delete", order.id)}
+                          onClick={() => showModal("delete", report.id)}
                           size="xs"
                           className="bg-red-500 hover:bg-red-600"
                         >

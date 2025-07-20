@@ -146,30 +146,36 @@ export default function NewsTable() {
               {/* Table Body */}
               <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                 {Array.isArray(data) &&
-                  data.map((order) => (
-                    <TableRow key={order.id}>
+                  data.map((news) => (
+                    <TableRow key={news.id}>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.title}
+                        {news.title}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.slug}
+                        {news.slug}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <div
                           className="line-clamp-3 overflow-hidden text-ellipsis "
-                          dangerouslySetInnerHTML={{ __html: order.content }}
+                          dangerouslySetInnerHTML={{ __html: news.content }}
                         />
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {order.author}
+                        {news.author}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.image_url ? order.image_url : "File kosong"}
+                      <TableCell className="px-4 py-3  text-start text-theme-sm">
+                        {news.image_url ? (
+                          <a href={news.image_url} className="text-blue-500">
+                            Lihat Media
+                          </a>
+                        ) : (
+                          <p className="text-gray-500 italic">Media kosong</p>
+                        )}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.published_at &&
-                        isValid(parseISO(order.published_at))
-                          ? format(parseISO(order.published_at), "d MMM yyyy", {
+                        {news.published_at &&
+                        isValid(parseISO(news.published_at))
+                          ? format(parseISO(news.published_at), "d MMM yyyy", {
                               locale: id,
                             })
                           : "-"}
@@ -178,29 +184,29 @@ export default function NewsTable() {
                         <Badge
                           size="sm"
                           color={
-                            order.status === "published"
+                            news.status === "published"
                               ? "success"
-                              : order.status === "draft"
+                              : news.status === "draft"
                               ? "warning"
                               : "error"
                           }
                         >
-                          {order.status}
+                          {news.status}
                         </Badge>
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.approved_by ?? "-"}
+                        {news.approved_by ?? "-"}
                       </TableCell>
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                         <div className="flex justify-center gap-2">
                           <Button
-                            onClick={() => showModal("update", order.id, data)}
+                            onClick={() => showModal("update", news.id, data)}
                             size="xs"
                           >
                             <PencilIcon />
                           </Button>
                           <Button
-                            onClick={() => showModal("delete", order.id)}
+                            onClick={() => showModal("delete", news.id)}
                             size="xs"
                             className="bg-red-500 hover:bg-red-600"
                           >
@@ -211,7 +217,7 @@ export default function NewsTable() {
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                         <div className="flex justify-center gap-2">
                           <Button
-                            onClick={() => showModal("detail", order.id, data)}
+                            onClick={() => showModal("detail", news.id, data)}
                             size="xs"
                             className="bg-yellow-500 hover:bg-yellow-600"
                           >

@@ -128,53 +128,55 @@ export default function OfficeTable() {
               {/* Table Body */}
               <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                 {Array.isArray(data) &&
-                  data.map((order) => (
-                    <TableRow key={order.id}>
+                  data.map((office) => (
+                    <TableRow key={office.id}>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.name}
+                        {office.name}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.address}
+                        {office.address}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.latitude}
+                        {office.latitude}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.longitude}
+                        {office.longitude}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.image_url ? (
-                          <a href={order.image_url}>{order.image_url}</a>
+                      <TableCell className="px-4 py-3  text-start text-theme-sm">
+                        {office.image_url ? (
+                          <a href={office.image_url} className="text-blue-500">
+                            Lihat Gambar
+                          </a>
                         ) : (
-                          "-"
+                          <p className="text-gray-500 italic">Gambar kosong</p>
                         )}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.map_link ? (
+                        {office.map_link ? (
                           <a
-                            href={order.map_link}
+                            href={office.map_link}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            {order.map_link}
+                            {office.map_link}
                           </a>
                         ) : (
                           "-"
                         )}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.phone_number}
+                        {office.phone_number}
                       </TableCell>
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                         <div className="flex justify-center gap-2">
                           <Button
-                            onClick={() => showModal("update", order.id, data)}
+                            onClick={() => showModal("update", office.id, data)}
                             size="xs"
                           >
                             <PencilIcon />
                           </Button>
                           <Button
-                            onClick={() => showModal("delete", order.id)}
+                            onClick={() => showModal("delete", office.id)}
                             size="xs"
                             className="bg-red-500 hover:bg-red-600"
                           >
