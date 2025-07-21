@@ -184,79 +184,110 @@ export default function AnnouncementApprovalTable() {
               {/* Table Body */}
               <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                 {Array.isArray(data) &&
-                  data.map((order) => (
-                    <TableRow key={order.id}>
+                  data.map((announcement) => (
+                    <TableRow key={announcement.id}>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.title}
+                        {announcement.title}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <div
-                          dangerouslySetInnerHTML={{ __html: order.content }}
+                          dangerouslySetInnerHTML={{
+                            __html: announcement.content,
+                          }}
                         />
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {order.author}
+                        {announcement.author}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {order.target_audience}
+                        {announcement.target_audience}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.start_date && isValid(parseISO(order.start_date))
-                          ? format(parseISO(order.start_date), "d MMM yyyy", {
-                              locale: id,
-                            })
+                        {announcement.start_date &&
+                        isValid(parseISO(announcement.start_date))
+                          ? format(
+                              parseISO(announcement.start_date),
+                              "d MMM yyyy",
+                              {
+                                locale: id,
+                              }
+                            )
                           : "-"}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.end_date && isValid(parseISO(order.end_date))
-                          ? format(parseISO(order.end_date), "d MMM yyyy", {
-                              locale: id,
-                            })
+                        {announcement.end_date &&
+                        isValid(parseISO(announcement.end_date))
+                          ? format(
+                              parseISO(announcement.end_date),
+                              "d MMM yyyy",
+                              {
+                                locale: id,
+                              }
+                            )
                           : "-"}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.attachment_url
-                          ? order.attachment_url
-                          : "File kosong"}
+                      <TableCell className="px-4 py-3  text-start text-theme-sm">
+                        {announcement.attachment_url ? (
+                          <a
+                            href={announcement.attachment_url}
+                            className="text-blue-500"
+                          >
+                            Lihat Lampiran
+                          </a>
+                        ) : (
+                          <p className="text-gray-500 italic">
+                            Lampiran kosong
+                          </p>
+                        )}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <Badge
                           size="sm"
-                          color={order.is_active === true ? "success" : "error"}
+                          color={
+                            announcement.is_active === true
+                              ? "success"
+                              : "error"
+                          }
                         >
-                          {order.is_active ? "Aktif" : "Nonaktif"}
+                          {announcement.is_active ? "Aktif" : "Nonaktif"}
                         </Badge>
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.published_at &&
-                        isValid(parseISO(order.published_at))
-                          ? format(parseISO(order.published_at), "d MMM yyyy", {
-                              locale: id,
-                            })
+                        {announcement.published_at &&
+                        isValid(parseISO(announcement.published_at))
+                          ? format(
+                              parseISO(announcement.published_at),
+                              "d MMM yyyy",
+                              {
+                                locale: id,
+                              }
+                            )
                           : "-"}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <Badge
                           size="sm"
                           color={
-                            order.status === "published"
+                            announcement.status === "published"
                               ? "success"
-                              : order.status === "draft"
+                              : announcement.status === "draft"
                               ? "warning"
                               : "error"
                           }
                         >
-                          {order.status}
+                          {announcement.status}
                         </Badge>
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.approved_by ?? "-"}
+                        {announcement.approved_by ?? "-"}
                       </TableCell>
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
-                        {order.status === "published" ? (
+                        {announcement.status === "published" ? (
                           <Button
                             isLoading={isPendingArchive}
-                            onClick={() => onApprove("archived", order.id)}
+                            onClick={() =>
+                              onApprove("archived", announcement.id)
+                            }
                             size="xs"
                             className="px-3 text-xs font-normal bg-yellow-500 hover:bg-yellow-600"
                           >
@@ -265,7 +296,9 @@ export default function AnnouncementApprovalTable() {
                         ) : (
                           <Button
                             isLoading={isPendingApprove}
-                            onClick={() => onApprove("publish", order.id)}
+                            onClick={() =>
+                              onApprove("publish", announcement.id)
+                            }
                             size="xs"
                             className="px-3 text-xs font-normal bg-green-500 hover:bg-green-600"
                           >

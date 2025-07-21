@@ -190,71 +190,81 @@ export default function ReportApprovalTable() {
               {/* Table Body */}
               <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                 {Array.isArray(data) &&
-                  data.map((order) => (
-                    <TableRow key={order.id}>
+                  data.map((report) => (
+                    <TableRow key={report.id}>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.title}
+                        {report.title}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.description}
+                        {report.description}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.period_start &&
-                        isValid(parseISO(order.period_start))
-                          ? format(parseISO(order.period_start), "d MMM yyyy", {
+                        {report.period_start &&
+                        isValid(parseISO(report.period_start))
+                          ? format(
+                              parseISO(report.period_start),
+                              "d MMM yyyy",
+                              {
+                                locale: id,
+                              }
+                            )
+                          : "-"}
+                      </TableCell>
+                      <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                        {report.period_start &&
+                        isValid(parseISO(report.period_end))
+                          ? format(parseISO(report.period_end), "d MMM yyyy", {
                               locale: id,
                             })
                           : "-"}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.period_start &&
-                        isValid(parseISO(order.period_end))
-                          ? format(parseISO(order.period_end), "d MMM yyyy", {
-                              locale: id,
-                            })
-                          : "-"}
+                      <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                        {report.year}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {order.year}
+                        {report.quarter ?? "-"}
+                      </TableCell>
+                      <TableCell className="px-4 py-3  text-start text-theme-sm">
+                        {report.fileurl ? (
+                          <a href={report.fileurl} className="text-blue-500">
+                            Lihat File
+                          </a>
+                        ) : (
+                          <p className="text-gray-500 italic">File kosong</p>
+                        )}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {order.quarter ?? "-"}
-                      </TableCell>
-                      <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.fileurl ? order.fileurl : "File kosong"}
-                      </TableCell>
-                      <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {order.version}
+                        {report.version}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <Badge
                           size="sm"
                           color={
-                            order.status === "published"
+                            report.status === "published"
                               ? "success"
-                              : order.status === "draft"
+                              : report.status === "draft"
                               ? "warning"
                               : "error"
                           }
                         >
-                          {order.status}
+                          {report.status}
                         </Badge>
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.upload_by}
+                        {report.upload_by}
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.approved_by ?? "-"}
+                        {report.approved_by ?? "-"}
                       </TableCell>
 
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.report_type}
+                        {report.report_type}
                       </TableCell>
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
-                        {order.status === "published" ? (
+                        {report.status === "published" ? (
                           <Button
                             isLoading={isPendingArchive}
-                            onClick={() => onApprove("archived", order.id)}
+                            onClick={() => onApprove("archived", report.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-yellow-500 hover:bg-yellow-600"
                           >
@@ -263,7 +273,7 @@ export default function ReportApprovalTable() {
                         ) : (
                           <Button
                             isLoading={isPendingApprove}
-                            onClick={() => onApprove("publish", order.id)}
+                            onClick={() => onApprove("publish", report.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-green-500 hover:bg-green-600"
                           >

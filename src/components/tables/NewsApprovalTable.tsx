@@ -15,6 +15,8 @@ import {
   TableRow,
 } from "../ui/table";
 import Pagination from "./Pagination";
+import { useModal } from "@/hooks/useModal";
+import ModalFormNews from "../modal/ModalFormNews";
 
 export default function NewsApprovalTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -83,6 +85,24 @@ export default function NewsApprovalTable() {
       archive(reportId);
     }
   };
+
+  const { isOpen, openModal, closeModal } = useModal();
+  const [action, setAction] = useState<any>(null);
+  const [newsId, setNewsId] = useState<any>(null);
+  const [item, setItem] = useState<any>(null);
+
+  function showModal(act: any, id: any, item?: INews[]) {
+    setAction("detail");
+    setNewsId(id);
+
+    if (item) {
+      const selected = item.find((item) => item.id === id);
+      setItem(selected ?? null);
+    } else {
+      setItem(null);
+    }
+    openModal();
+  }
 
   if (isLoading)
     return (
@@ -160,33 +180,48 @@ export default function NewsApprovalTable() {
                   >
                     Aksi
                   </TableCell>
+                  <TableCell
+                    isHeader
+                    className="px-5 py-3 font-medium text-gray-500 text-center text-theme-xs dark:text-gray-400"
+                  >
+                    Detail
+                  </TableCell>
                 </TableRow>
               </TableHeader>
 
               {/* Table Body */}
               <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                 {Array.isArray(data) &&
-                  data.map((order) => (
-                    <TableRow key={order.id}>
+                  data.map((news) => (
+                    <TableRow key={news.id}>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.title}
+                        {news.title}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.slug}
+                        {news.slug}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.content}
+                        <div
+                          className="line-clamp-3 overflow-hidden text-ellipsis "
+                          dangerouslySetInnerHTML={{ __html: news.content }}
+                        />
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {order.author}
+                        {news.author}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.image_url ? order.image_url : "File kosong"}
+                      <TableCell className="px-4 py-3  text-start text-theme-sm">
+                        {news.image_url ? (
+                          <a href={news.image_url} className="text-blue-500">
+                            Lihat Media
+                          </a>
+                        ) : (
+                          <p className="text-gray-500 italic">Media kosong</p>
+                        )}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.published_at &&
-                        isValid(parseISO(order.published_at))
-                          ? format(parseISO(order.published_at), "d MMM yyyy", {
+                        {news.published_at &&
+                        isValid(parseISO(news.published_at))
+                          ? format(parseISO(news.published_at), "d MMM yyyy", {
                               locale: id,
                             })
                           : "-"}
@@ -195,24 +230,24 @@ export default function NewsApprovalTable() {
                         <Badge
                           size="sm"
                           color={
-                            order.status === "published"
+                            news.status === "published"
                               ? "success"
-                              : order.status === "draft"
+                              : news.status === "draft"
                               ? "warning"
                               : "error"
                           }
                         >
-                          {order.status}
+                          {news.status}
                         </Badge>
                       </TableCell>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.approved_by ?? "-"}
+                        {news.approved_by ?? "-"}
                       </TableCell>
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
-                        {order.status === "published" ? (
+                        {news.status === "published" ? (
                           <Button
                             isLoading={isPendingArchive}
-                            onClick={() => onApprove("archived", order.id)}
+                            onClick={() => onApprove("archived", news.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-yellow-500 hover:bg-yellow-600"
                           >
@@ -221,13 +256,23 @@ export default function NewsApprovalTable() {
                         ) : (
                           <Button
                             isLoading={isPendingApprove}
-                            onClick={() => onApprove("publish", order.id)}
+                            onClick={() => onApprove("publish", news.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-green-500 hover:bg-green-600"
                           >
                             Publish
                           </Button>
                         )}
+                      </TableCell>
+                      <TableCell className="w-[50px] text-center text-theme-sm px-4">
+                        <div className="flex justify-center gap-2">
+                          <p
+                            onClick={() => showModal("detail", news.id, data)}
+                            className="text-yellow-500 hover:text-yellow-600 font-bold cursor-pointer"
+                          >
+                            <p className="font-light">Lihat Detail</p>
+                          </p>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -236,6 +281,13 @@ export default function NewsApprovalTable() {
           </div>
         </div>
       </div>
+      <ModalFormNews
+        isOpen={isOpen}
+        action={action}
+        newsId={newsId}
+        closeModal={closeModal}
+        item={item}
+      />
       <div className="flex justify-end mt-4">
         <Pagination
           currentPage={currentPage}

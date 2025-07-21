@@ -17,6 +17,7 @@ import TextArea from "../form/input/TextArea";
 import DeleteHeader from "../ui/alert/DeleteHeader";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
+import FileInput from "../form/input/FileInput";
 
 type ModalProps = {
   action?: "create" | "update" | "delete" | "approval" | null;
@@ -93,13 +94,28 @@ const ModalFormReport: React.FC<ModalProps> = ({
 
   const { mutate: create, isPending: isPendingCreate } = useMutation({
     mutationFn: async (data: ReportFormInput) => {
-      const payload = {
-        ...data,
-        period_start: data.period_start.toISOString(),
-        period_end: data.period_end.toISOString(),
-      };
+      const formData = new FormData();
 
-      const res = await apiV1.post(`/reports`, payload);
+      formData.append("title", data.title);
+      if (data.description) {
+        formData.append("description", data.description);
+      }
+      formData.append("period_start", data.period_start.toISOString());
+      formData.append("period_end", data.period_end.toISOString());
+      formData.append("year", data.year.toString());
+      formData.append("version", data.version);
+      formData.append("report_type", data.report_type);
+
+      if (data.file) {
+        formData.append("file", data.file);
+      }
+
+      const res = await apiV1.post(`/reports`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       return res.data.data;
     },
     onError: (err: any) => {
@@ -283,6 +299,11 @@ const ModalFormReport: React.FC<ModalProps> = ({
                     hint={errors.version?.message}
                     error={!!errors.version}
                   />
+                </div>
+
+                <div className="col-span-1 sm:col-span-2">
+                  <Label>Upload file</Label>
+                  <FileInput name="file" className="custom-class" />
                 </div>
               </div>
 
