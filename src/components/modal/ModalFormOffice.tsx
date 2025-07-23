@@ -50,7 +50,7 @@ const ModalFormOffice: React.FC<ModalProps> = ({
           name: item.name,
           address: item.address,
           longitude: item.longitude,
-          latitude: item.address,
+          latitude: item.latitude,
           map_link: item.map_link,
           phone_number: item.phone_number,
         });
@@ -211,26 +211,28 @@ const ModalFormOffice: React.FC<ModalProps> = ({
                 </div> */}
 
                 <div className="col-span-1">
-                  <Label>Longitude</Label>
-                  <Input
-                    id="longitude"
-                    type="text"
-                    placeholder="Longitude"
-                    {...register("longitude")}
-                    hint={errors.longitude?.message}
-                    error={!!errors.longitude}
-                  />
-                </div>
-
-                <div className="col-span-1">
                   <Label>Latitude</Label>
                   <Input
                     id="latitude"
-                    type="text"
+                    type="number"
+                    step="any"
                     placeholder="Latitude"
                     {...register("latitude")}
                     hint={errors.latitude?.message}
                     error={!!errors.latitude}
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <Label>Longitude</Label>
+                  <Input
+                    id="longitude"
+                    type="number"
+                    step="any"
+                    placeholder="Longitude"
+                    {...register("longitude")}
+                    hint={errors.longitude?.message}
+                    error={!!errors.longitude}
                   />
                 </div>
 
