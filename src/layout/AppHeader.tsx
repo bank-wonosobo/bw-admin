@@ -124,7 +124,7 @@ const AppHeader: React.FC = () => {
             </svg>
           </button>
 
-          {pathname === "/pengaduan/list" && (
+          {/* {pathname === "/pengaduan/list" && (
             <div className="hidden lg:block">
               <form>
                 <div className="relative">
@@ -160,7 +160,7 @@ const AppHeader: React.FC = () => {
                 </div>
               </form>
             </div>
-          )}
+          )} */}
         </div>
         <div
           className={`${

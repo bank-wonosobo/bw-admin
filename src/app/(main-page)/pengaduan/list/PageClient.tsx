@@ -7,9 +7,9 @@ import ComplainTable from "@/components/tables/ComplaintTable";
 export default function Page() {
   return (
     <div>
-      <PageBreadcrumb pageTitle="Pengaduan" />
+      <PageBreadcrumb pageTitle="List Pengaduan" />
       <div className="space-y-6">
-        <ComponentCard title="List Pengaduan">
+        <ComponentCard title="aduan">
           <ComplainTable />
         </ComponentCard>
       </div>
