@@ -101,11 +101,12 @@ const ModalFormReport: React.FC<ModalProps> = ({
         formData.append("description", data.description);
       }
       formData.append("period_start", data.period_start.toISOString());
-      formData.append("period_end", data.period_end.toISOString());
+      if (data.period_end) {
+        formData.append("period_end", data.period_end.toISOString());
+      }
       formData.append("year", data.year.toString());
       formData.append("version", data.version);
       formData.append("report_type", data.report_type);
-
       if (data.file) {
         formData.append("file", data.file);
       }
@@ -138,7 +139,7 @@ const ModalFormReport: React.FC<ModalProps> = ({
       const payload = {
         ...data,
         period_start: data.period_start.toISOString(),
-        period_end: data.period_end.toISOString(),
+        period_end: data.period_end?.toISOString(),
       };
 
       const res = await apiV1.put(`/reports/${reportId}`, payload);
