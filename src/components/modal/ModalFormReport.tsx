@@ -259,6 +259,8 @@ const ModalFormReport: React.FC<ModalProps> = ({
                       placeholder="Pilih tanggal"
                       value={field.value}
                       onChange={(dates) => field.onChange(dates[0])}
+                      hint={errors.period_start?.message}
+                      error={!!errors.period_start}
                     />
                   )}
                 />
@@ -273,6 +275,8 @@ const ModalFormReport: React.FC<ModalProps> = ({
                       placeholder="Pilih tanggal"
                       value={field.value}
                       onChange={(dates) => field.onChange(dates[0])}
+                      hint={errors.period_end?.message}
+                      error={!!errors.period_end}
                     />
                   )}
                 />
