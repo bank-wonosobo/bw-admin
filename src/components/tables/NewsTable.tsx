@@ -82,6 +82,12 @@ export default function NewsTable() {
         Terjadi kesalahan saat mengambil data.
       </p>
     );
+  if (!data)
+    return (
+      <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
+        Data tidak ditemukan.
+      </p>
+    );
 
   return (
     <>

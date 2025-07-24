@@ -14,11 +14,23 @@ import {
   TableRow,
 } from "../ui/table";
 import Pagination from "./Pagination";
-import { useState } from "react";
+import { useSearch } from "@/hooks/useSearch";
+import { useEffect, useState } from "react";
 
 export default function ReportApprovalTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const { search } = useSearch();
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   const {
     data = [],
@@ -94,6 +106,12 @@ export default function ReportApprovalTable() {
     return (
       <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
         Terjadi kesalahan saat mengambil data.
+      </p>
+    );
+  if (!data)
+    return (
+      <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
+        Data tidak ditemukan.
       </p>
     );
 

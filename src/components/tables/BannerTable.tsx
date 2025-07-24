@@ -3,7 +3,8 @@ import { useModal } from "@/hooks/useModal";
 import { PencilIcon, TrashBinIcon } from "@/icons/index";
 import { IBanner } from "@/types/Banner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useSearch } from "@/hooks/useSearch";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ModalFormBanner from "../modal/ModalFormBanner";
 import Badge from "../ui/badge/Badge";
@@ -20,6 +21,17 @@ import Pagination from "./Pagination";
 export default function BannerTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const { search } = useSearch();
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   const queryClient = useQueryClient();
 
@@ -28,10 +40,10 @@ export default function BannerTable() {
     isLoading,
     isError,
   } = useQuery<IBanner[]>({
-    queryKey: ["banner", currentPage],
+    queryKey: ["banner", currentPage, debouncedSearch],
     queryFn: async () => {
       const response = await apiV1.get("/banners", {
-        params: { page: currentPage },
+        params: { page: currentPage, key: debouncedSearch },
       });
       setTotalPage(response.data.total_page);
       return response.data.data;
@@ -86,6 +98,12 @@ export default function BannerTable() {
     return (
       <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
         Terjadi kesalahan saat mengambil data.
+      </p>
+    );
+  if (!data)
+    return (
+      <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
+        Data tidak ditemukan.
       </p>
     );
 

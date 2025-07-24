@@ -3,7 +3,7 @@ import { INews } from "@/types/News";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
@@ -17,20 +17,32 @@ import {
 import Pagination from "./Pagination";
 import { useModal } from "@/hooks/useModal";
 import ModalFormNews from "../modal/ModalFormNews";
+import { useSearch } from "@/hooks/useSearch";
 
 export default function NewsApprovalTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const { search } = useSearch();
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   const {
     data = [],
     isLoading,
     isError,
   } = useQuery<INews[]>({
-    queryKey: ["news", currentPage],
+    queryKey: ["news", currentPage, debouncedSearch],
     queryFn: async () => {
       const response = await apiV1.get("/news", {
-        params: { page: currentPage },
+        params: { page: currentPage, key: debouncedSearch },
       });
       setTotalPage(response.data.total_page);
       return response.data.data;
@@ -114,6 +126,12 @@ export default function NewsApprovalTable() {
     return (
       <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
         Terjadi kesalahan saat mengambil data.
+      </p>
+    );
+  if (!data)
+    return (
+      <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
+        Data tidak ditemukan.
       </p>
     );
 

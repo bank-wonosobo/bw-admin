@@ -3,7 +3,8 @@ import { useModal } from "@/hooks/useModal";
 import { PencilIcon, TrashBinIcon } from "@/icons/index";
 import { IOffice } from "@/types/Office";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useSearch } from "@/hooks/useSearch";
+import { useEffect, useState } from "react";
 import ModalFormOffice from "../modal/ModalFormOffice";
 import Button from "../ui/button/Button";
 import {
@@ -18,16 +19,27 @@ import Pagination from "./Pagination";
 export default function OfficeTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const { search } = useSearch();
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   const {
     data = [],
     isLoading,
     isError,
   } = useQuery<IOffice[]>({
-    queryKey: ["office", currentPage],
+    queryKey: ["office", currentPage, debouncedSearch],
     queryFn: async () => {
       const response = await apiV1na.get("/offices", {
-        params: { page: currentPage },
+        params: { page: currentPage, key: debouncedSearch },
       });
       setTotalPage(response.data.total_page);
       return response.data.data;
@@ -62,6 +74,12 @@ export default function OfficeTable() {
     return (
       <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
         Terjadi kesalahan saat mengambil data.
+      </p>
+    );
+  if (!data)
+    return (
+      <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
+        Data tidak ditemukan.
       </p>
     );
 

@@ -5,7 +5,8 @@ import { IReports } from "@/types/Reports";
 import { useQuery } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
-import { useState } from "react";
+import { useSearch } from "@/hooks/useSearch";
+import { useEffect, useState } from "react";
 import ModalFormReport from "../modal/ModalFormReport";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
@@ -21,6 +22,17 @@ import Pagination from "./Pagination";
 export default function ReportTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const { search } = useSearch();
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   const {
     data = [],
@@ -66,6 +78,12 @@ export default function ReportTable() {
     return (
       <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
         Terjadi kesalahan saat mengambil data.
+      </p>
+    );
+  if (!data)
+    return (
+      <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
+        Data tidak ditemukan.
       </p>
     );
 

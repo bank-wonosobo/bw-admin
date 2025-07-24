@@ -3,7 +3,8 @@ import { IAnnouncement } from "@/types/Announcement";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
-import { useState } from "react";
+import { useSearch } from "@/hooks/useSearch";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
@@ -19,16 +20,27 @@ import Pagination from "./Pagination";
 export default function AnnouncementApprovalTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const { search } = useSearch();
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   const {
     data = [],
     isLoading,
     isError,
   } = useQuery<IAnnouncement[]>({
-    queryKey: ["announcement", currentPage],
+    queryKey: ["announcement", currentPage, debouncedSearch],
     queryFn: async () => {
       const response = await apiV1.get("/announcements", {
-        params: { page: currentPage },
+        params: { page: currentPage, key: debouncedSearch },
       });
       setTotalPage(response.data.total_page);
       return response.data.data;
@@ -94,6 +106,12 @@ export default function AnnouncementApprovalTable() {
     return (
       <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
         Terjadi kesalahan saat mengambil data.
+      </p>
+    );
+  if (!data)
+    return (
+      <p className="px-5 py-3 text-black text-start text-theme-sm dark:text-gray-400">
+        Data tidak ditemukan.
       </p>
     );
 
