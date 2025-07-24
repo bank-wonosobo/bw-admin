@@ -12,7 +12,8 @@ export default function Page() {
       <div className="space-y-6">
         <ComponentCard
           ModalComponent={ModalFormProducts}
-          title="Produk dan Layanan"
+          title="produk atau layanan . . ."
+          search
         >
           <ProductsTable />
         </ComponentCard>

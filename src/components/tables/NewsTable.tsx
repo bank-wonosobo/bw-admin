@@ -5,7 +5,7 @@ import { INews } from "@/types/News";
 import { useQuery } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalFormNews from "../modal/ModalFormNews";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
@@ -17,20 +17,32 @@ import {
   TableRow,
 } from "../ui/table";
 import Pagination from "./Pagination";
+import { useSearch } from "@/hooks/useSearch";
 
 export default function NewsTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const { search } = useSearch();
+
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+  }, [search]);
 
   const {
     data = [],
     isLoading,
     isError,
   } = useQuery<INews[]>({
-    queryKey: ["news", currentPage],
+    queryKey: ["news", currentPage, debouncedSearch],
     queryFn: async () => {
       const response = await apiV1.get("/news", {
-        params: { page: currentPage },
+        params: { page: currentPage, key: debouncedSearch },
       });
       setTotalPage(response.data.total_page);
       return response.data.data;

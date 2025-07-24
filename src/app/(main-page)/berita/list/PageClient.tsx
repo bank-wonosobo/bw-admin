@@ -10,7 +10,11 @@ export default function Page() {
     <div>
       <PageBreadcrumb pageTitle="Berita" />
       <div className="space-y-6">
-        <ComponentCard ModalComponent={ModalFormNews} title="Berita">
+        <ComponentCard
+          ModalComponent={ModalFormNews}
+          title="berita . . ."
+          search
+        >
           <NewsTable />
         </ComponentCard>
       </div>

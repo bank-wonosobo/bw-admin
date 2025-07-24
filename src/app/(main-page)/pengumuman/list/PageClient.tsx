@@ -12,7 +12,8 @@ export default function Page() {
       <div className="space-y-6">
         <ComponentCard
           ModalComponent={ModalFormAnnouncement}
-          title="Pengumuman"
+          title="pengumuman . . ."
+          search
         >
           <AnnouncementTable />
         </ComponentCard>

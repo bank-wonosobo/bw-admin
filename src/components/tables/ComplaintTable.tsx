@@ -24,8 +24,6 @@ export default function ReportApprovalTable() {
 
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-  console.log(search);
-
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);

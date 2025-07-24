@@ -9,7 +9,7 @@ export default function Page() {
     <div>
       <PageBreadcrumb pageTitle="Approval Laporan Publikasi" />
       <div className="space-y-6">
-        <ComponentCard title="Approval">
+        <ComponentCard title="laporan publikasi . . ." search>
           <ReportApprovalTable />
         </ComponentCard>
       </div>

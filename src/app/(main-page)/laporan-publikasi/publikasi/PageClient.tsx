@@ -10,7 +10,11 @@ export default function Page() {
     <div>
       <PageBreadcrumb pageTitle="Publikasi" />
       <div className="space-y-6">
-        <ComponentCard ModalComponent={ModalFormReport} title="Publikasi">
+        <ComponentCard
+          ModalComponent={ModalFormReport}
+          title="laporan publikasi . . ."
+          search
+        >
           <ReportTable />
         </ComponentCard>
       </div>

@@ -12,6 +12,7 @@ type ComponentCardProps = {
   desc?: string;
   path?: string;
   ModalComponent?: React.FC<ModalProps>;
+  search?: boolean;
 };
 
 type ModalProps = {
@@ -26,10 +27,9 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
   className = "",
   desc = "",
   ModalComponent,
+  search,
 }) => {
   const { isOpen, openModal, closeModal } = useModal();
-
-  const pathname = usePathname();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const { setSearch } = useSearch();
@@ -56,7 +56,7 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
       {/* Card Header */}
       <div className="flex justify-between items-center px-6 py-5">
         <div>
-          {pathname === "/pengaduan/list" ? (
+          {search ? (
             <div className="">
               <form>
                 <div className="relative">
