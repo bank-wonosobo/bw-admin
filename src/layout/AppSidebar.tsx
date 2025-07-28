@@ -35,11 +35,17 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
+  // {
+  //   icon: <GridIcon />,
+  //   name: "Dashboard",
+  //   path: "/",
+  //   permission: "dashboard:view",
+  // },
   {
-    icon: <GridIcon />,
-    name: "Dashboard",
-    path: "/",
-    permission: "dashboard:view",
+    icon: <EnvelopeIcon />,
+    name: "Jaringan Kantor",
+    path: "/jaringan-kantor",
+    permission: "office:view",
   },
   {
     name: "Laporan Publikasi",
@@ -115,12 +121,6 @@ const navItems: NavItem[] = [
     name: "Banner",
     path: "/banner",
     permission: "banner:view",
-  },
-  {
-    icon: <EnvelopeIcon />,
-    name: "Jaringan Kantor",
-    path: "/jaringan-kantor",
-    permission: "office:view",
   },
   {
     icon: <ChatIcon />,

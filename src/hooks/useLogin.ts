@@ -33,7 +33,7 @@ export const useLogin = () => {
     onSuccess: async () => {
       toast.success("Login berhasil.");
       await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      router.push("/");
+      router.push("/jaringan-kantor");
     },
 
     onError: (err: unknown) => {

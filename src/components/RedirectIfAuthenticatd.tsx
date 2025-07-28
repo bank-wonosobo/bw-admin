@@ -15,7 +15,7 @@ export default function RedirectIfAuthenticated({
 
   useEffect(() => {
     if (!isLoading && user) {
-      router.replace("/");
+      router.replace("/jaringan-kantor");
     }
   }, [isLoading, user, router]);
 

@@ -22,17 +22,17 @@ export default function AuthLayout({
               <div className="relative items-center justify-center  flex z-1">
                 <GridShape />
                 <div className="flex flex-col items-center max-w-xs">
-                  <Link href="/" className="block mb-4">
-                    <Image
-                      width={693}
-                      height={144}
-                      src="/images/logo/logo-bw.png"
-                      alt="Logo"
-                    />
-                  </Link>
-                  <p className="text-center text-gray-400 dark:text-white/60">
-                    Selamat Datang di Bank Wonosobo
-                  </p>
+                  <div className="block mb-4">
+                    <p className="text-center mb-2 text-gray-400 dark:text-white/60">
+                      Selamat Datang di
+                    </p>
+                    <p className="text-center font-bold text-4xl text-gray-400 dark:text-white/60">
+                      Dashboard Admin Bank Wonosobo
+                    </p>
+                    <p className="text-center font-bold text-4xl text-gray-400 dark:text-white/60">
+                      . . .
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
