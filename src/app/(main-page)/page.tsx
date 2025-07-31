@@ -7,7 +7,7 @@ export default function Ecommerce() {
 
   useEffect(() => {
     router.replace("/jaringan-kantor");
-  }, []);
+  });
 
   // return (
   //   <PermissionGuard requiredPermission="dashboard:view">

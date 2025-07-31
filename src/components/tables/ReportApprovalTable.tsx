@@ -37,10 +37,10 @@ export default function ReportApprovalTable() {
     isLoading,
     isError,
   } = useQuery<IReports[]>({
-    queryKey: ["reports"],
+    queryKey: ["reports", currentPage, debouncedSearch],
     queryFn: async () => {
       const response = await apiV1.get("/reports", {
-        params: { page: currentPage },
+        params: { page: currentPage, key: debouncedSearch },
       });
       setTotalPage(response.data.total_page);
       return response.data.data;

@@ -2,18 +2,14 @@
 import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
-import { useSearch } from "@/hooks/useSearch";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
-
-  const pathname = usePathname();
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -27,7 +23,6 @@ const AppHeader: React.FC = () => {
     setApplicationMenuOpen(!isApplicationMenuOpen);
   };
   const inputRef = useRef<HTMLInputElement>(null);
-  const { setSearch } = useSearch();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

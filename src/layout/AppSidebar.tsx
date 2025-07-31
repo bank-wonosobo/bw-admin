@@ -12,7 +12,6 @@ import {
   ChevronDownIcon,
   EnvelopeIcon,
   FileIcon,
-  GridIcon,
   HorizontaLDots,
   InfoIcon,
   PlugInIcon,
