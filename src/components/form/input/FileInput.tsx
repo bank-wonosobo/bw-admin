@@ -6,7 +6,7 @@ interface FileInputProps {
   className?: string;
   error?: boolean;
   success?: boolean;
-  hint?: string;
+  hint?: any;
 }
 
 const FileInput: FC<FileInputProps> = ({

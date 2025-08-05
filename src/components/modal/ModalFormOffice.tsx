@@ -1,7 +1,11 @@
 "use client";
 import { apiV1na } from "@/api/api";
 import { IOffice } from "@/types/Office";
-import { OfficeFormInput, officeSchema } from "@/validation/officeSchema";
+import {
+  editOfficeSchema,
+  OfficeFormInput,
+  officeSchema,
+} from "@/validation/officeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -14,6 +18,7 @@ import TextArea from "../form/input/TextArea";
 import DeleteHeader from "../ui/alert/DeleteHeader";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
+import { ZodType } from "zod";
 
 type ModalProps = {
   action?: "create" | "update" | "delete" | "approval" | null;
@@ -30,8 +35,16 @@ const ModalFormOffice: React.FC<ModalProps> = ({
   officeId,
   item,
 }) => {
-  const methods = useForm<OfficeFormInput>({
-    resolver: zodResolver(officeSchema),
+  const isCreate = action === "create";
+
+  const schema = isCreate ? officeSchema : editOfficeSchema;
+
+  type SchemaType = typeof schema extends ZodType<any, any, infer T>
+    ? T
+    : never;
+
+  const methods = useForm<SchemaType>({
+    resolver: zodResolver(schema),
   });
 
   const {
@@ -261,9 +274,30 @@ const ModalFormOffice: React.FC<ModalProps> = ({
                 </div>
 
                 <div className="col-span-1 sm:col-span-2">
-                  <Label>Upload file</Label>
-                  <FileInput name="image" className="custom-class" />
+                  <Label>
+                    {action === "create"
+                      ? "Upload gambar"
+                      : "Upload gambar baru"}
+                  </Label>
+                  <FileInput
+                    hint={errors.image?.message}
+                    error={!!errors.image}
+                    name="image"
+                    className="custom-class"
+                  />
                 </div>
+
+                {action === "update" && (
+                  <div className="col-span-1 sm:col-span-2">
+                    <Label>Gambar saat ini</Label>
+                    <div className="rounded-xl">
+                      <img
+                        src={item?.image_url}
+                        className="w-32 h-24 object-cover rounded-xl"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-end w-full gap-3 mt-8">
