@@ -8,6 +8,7 @@ export const reportSchema = z.object({
   year: z.number(),
   version: z.string().min(1, "Versi wajib diisi"),
   report_type: z.string().min(1, "Jenis laporan wajib diisi"),
+  file: z.any(),
 });
 
 export type ReportFormInput = z.infer<typeof reportSchema>;

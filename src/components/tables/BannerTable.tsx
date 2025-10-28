@@ -140,34 +140,42 @@ export default function BannerTable() {
               {/* Table Body */}
               <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                 {Array.isArray(data) &&
-                  data.map((order) => (
-                    <TableRow key={order.id}>
+                  data.map((banner) => (
+                    <TableRow key={banner.id}>
                       <TableCell className="px-4 py-3 font-medium text-gray-800 text-start text-theme-sm dark:text-gray-400">
-                        {order.name}
+                        {banner.name}
                       </TableCell>
-                      <TableCell className="px-4 py-3 text-blue-500 text-start text-theme-sm dark:text-gray-400">
-                        {order.image_url ? order.image_url : "File kosong"}
+                      <TableCell className="px-4 py-3  text-start text-theme-sm">
+                        {banner.image_url ? (
+                          <a href={banner.image_url} className="text-blue-500">
+                            Lihat Media
+                          </a>
+                        ) : (
+                          <p className="text-gray-500 italic">Media kosong</p>
+                        )}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: order.description,
+                            __html: banner.description,
                           }}
                         />
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                         <Badge
                           size="sm"
-                          color={order.is_active === true ? "success" : "error"}
+                          color={
+                            banner.is_active === true ? "success" : "error"
+                          }
                         >
-                          {order.is_active ? "Aktif" : "Nonaktif"}
+                          {banner.is_active ? "Aktif" : "Nonaktif"}
                         </Badge>
                       </TableCell>
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
-                        {order.is_active ? (
+                        {banner.is_active ? (
                           <Button
                             isLoading={isPendingActivate}
-                            onClick={() => activateBanner(order.id)}
+                            onClick={() => activateBanner(banner.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-yellow-500 hover:bg-yellow-600"
                           >
@@ -176,7 +184,7 @@ export default function BannerTable() {
                         ) : (
                           <Button
                             isLoading={isPendingActivate}
-                            onClick={() => activateBanner(order.id)}
+                            onClick={() => activateBanner(banner.id)}
                             size="xs"
                             className="px-3 text-xs font-normal bg-green-500 hover:bg-green-600"
                           >
@@ -187,13 +195,13 @@ export default function BannerTable() {
                       <TableCell className="w-[50px] text-center text-theme-xs dark:text-gray-400 px-4">
                         <div className="flex justify-center gap-2">
                           <Button
-                            onClick={() => showModal("update", order.id, data)}
+                            onClick={() => showModal("update", banner.id, data)}
                             size="xs"
                           >
                             <PencilIcon />
                           </Button>
                           <Button
-                            onClick={() => showModal("delete", order.id)}
+                            onClick={() => showModal("delete", banner.id)}
                             size="xs"
                             className="bg-red-500 hover:bg-red-600"
                           >
