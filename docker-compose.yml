@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: web-profile
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: https://api-prod.bankwonosobo.co.id/publication
+      NEXT_PUBLIC_AUTH_API_URL: https://api-prod.bankwonosobo.co.id
