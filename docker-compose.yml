@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    container_name: web-profile
+    container_name: publication-panel
     ports:
       - "3000:3000"
     environment:
