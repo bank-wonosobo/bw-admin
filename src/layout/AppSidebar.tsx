@@ -18,6 +18,7 @@ import {
   PlugInIcon,
   ShootingStarIcon,
   TaskIcon,
+  TimeIcon,
 } from "../icons/index";
 
 type NavItem = {
@@ -123,6 +124,27 @@ const navItems: NavItem[] = [
     permission: "office:view",
   },
   {
+    icon: <HorizontaLDots />,
+    name: "Profile",
+    subItems: [
+      {
+        name: "Profile",
+        path: "/profile/profile",
+        pro: false,
+      },
+      {
+        name: "Struktur Organisasi",
+        path: "/profile/struktur-organisasi",
+        pro: false,
+      },
+      {
+        name: "Visi Misi",
+        path: "/profile/visi-misi",
+        pro: false,
+      },
+    ],
+  },
+  {
     icon: <ChatIcon />,
     name: "Pengaduan",
     permission: "complaint:view",
@@ -141,12 +163,12 @@ const navItems: NavItem[] = [
       },
     ],
   },
-  // {
-  //   icon: <TimeIcon />,
-  //   name: "Lelang",
-  //   path: "/lelang",
-  //   permission: "report:view",
-  // },
+  {
+    icon: <TimeIcon />,
+    name: "Lelang",
+    path: "/lelang",
+    permission: "auction:view",
+  },
   // {
   //   icon: <PaperPlaneIcon />,
   //   name: "Karir",
@@ -425,18 +447,18 @@ const AppSidebar: React.FC = () => {
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <Image
-                className="dark:hidden"
+                className="h-auto w-[150px] dark:hidden"
                 src="/images/logo/logo.png"
                 alt="Logo"
-                width={150}
-                height={40}
+                width={223}
+                height={34}
               />
               <Image
-                className="hidden dark:block"
+                className="hidden h-auto w-[150px] dark:block"
                 src="/images/logo/logo.png"
                 alt="Logo"
-                width={150}
-                height={40}
+                width={223}
+                height={34}
               />
             </>
           ) : (

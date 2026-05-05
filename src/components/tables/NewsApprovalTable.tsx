@@ -91,7 +91,7 @@ export default function NewsApprovalTable() {
   const [newsId, setNewsId] = useState<any>(null);
   const [item, setItem] = useState<any>(null);
 
-  function showModal(act: any, id: any, item?: INews[]) {
+  function showModal(_act: any, id: any, item?: INews[]) {
     setAction("detail");
     setNewsId(id);
 
@@ -266,12 +266,12 @@ export default function NewsApprovalTable() {
                       </TableCell>
                       <TableCell className="w-[50px] text-center text-theme-sm px-4">
                         <div className="flex justify-center gap-2">
-                          <p
+                          <span
                             onClick={() => showModal("detail", news.id, data)}
                             className="text-yellow-500 hover:text-yellow-600 font-bold cursor-pointer"
                           >
-                            <p className="font-light">Lihat Detail</p>
-                          </p>
+                            <span className="font-light">Lihat Detail</span>
+                          </span>
                         </div>
                       </TableCell>
                     </TableRow>

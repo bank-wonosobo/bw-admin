@@ -23,6 +23,7 @@ const RichTextEditor = ({ name, className }: RichTextEditorProps) => {
       Image,
     ],
     content,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => {
       setValue(name, editor.getHTML());
     },

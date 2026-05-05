@@ -24,9 +24,10 @@ export default function AuthLayout({
                 <div className="flex flex-col items-center max-w-xs">
                   <Link href="/" className="block mb-4">
                     <Image
-                      width={693}
-                      height={144}
-                      src="/images/logo/logo-bw.png"
+                      width={223}
+                      height={34}
+                      className="h-auto w-[223px] max-w-full"
+                      src="/images/logo/logo.png"
                       alt="Logo"
                     />
                   </Link>

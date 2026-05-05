@@ -1,8 +1,25 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL;
+const rawBaseURL = process.env.NEXT_PUBLIC_API_URL?.trim() || "";
 const baseURLauth = process.env.NEXT_PUBLIC_AUTH_API_URL;
+
+function createPublicationBaseURL(baseURL: string) {
+  if (!baseURL) return "";
+
+  const normalizedBaseURL = baseURL.replace(/\/+$/, "");
+
+  if (
+    normalizedBaseURL.endsWith("/api/v1") ||
+    normalizedBaseURL.endsWith("/publication")
+  ) {
+    return normalizedBaseURL;
+  }
+
+  return `${normalizedBaseURL}/api/v1`;
+}
+
+const baseURL = createPublicationBaseURL(rawBaseURL);
 
 export const apiV1 = axios.create({
   baseURL: `${baseURL}/admin`,
