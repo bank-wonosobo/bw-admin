@@ -2,16 +2,16 @@
 
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import ModalFormLelang from "@/components/modal/ModalFormLelang";
-import LelangTable from "@/components/tables/LelangTable";
+import ModalFormProfile from "@/components/modal/ModalFormProfile";
+import ProfileTable from "@/components/tables/ProfileTable";
 
 export default function Page() {
   return (
     <div>
-      <PageBreadcrumb pageTitle="Lelang" />
+      <PageBreadcrumb pageTitle="Profile" />
       <div className="space-y-6">
-        <ComponentCard ModalComponent={ModalFormLelang} title="Lelang">
-          <LelangTable />
+        <ComponentCard ModalComponent={ModalFormProfile} title="Profile">
+          <ProfileTable />
         </ComponentCard>
       </div>
     </div>
