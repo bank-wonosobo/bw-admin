@@ -61,7 +61,7 @@ const ModalFormReport: React.FC<ModalProps> = ({
     const fetchReportTypes = async () => {
       try {
         const res = await apiV1.get("/report-types");
-        setReportTypes(res.data.data);
+        setReportTypes(res.data.data ?? []);
       } catch (err) {
         console.error("Error fetching report types:", err);
       }
@@ -100,8 +100,8 @@ const ModalFormReport: React.FC<ModalProps> = ({
       if (data.description) {
         formData.append("description", data.description);
       }
-      formData.append("period_start", data.period_start.toISOString());
-      formData.append("period_end", data.period_end.toISOString());
+      formData.append("period_start", data.period_start.toISOString().split("T")[0]);
+      formData.append("period_end", data.period_end.toISOString().split("T")[0]);
       formData.append("year", data.year.toString());
       formData.append("version", data.version);
       formData.append("report_type", data.report_type);
