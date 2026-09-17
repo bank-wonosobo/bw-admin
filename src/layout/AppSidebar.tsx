@@ -68,6 +68,27 @@ const navItems: NavItem[] = [
     ],
   },
   {
+    name: "Daftar Informasi",
+    icon: <FileIcon />,
+    subItems: [
+      {
+        name: "Daftar Informasi Publik",
+        path: "/daftar-informasi/publik",
+        pro: false,
+      },
+      {
+        name: "Daftar Informasi yang Dikecualikan",
+        path: "/daftar-informasi/dikecualikan",
+        pro: false,
+      },
+      {
+        name: "Regulasi Informasi PPID",
+        path: "/daftar-informasi/ppid-regulations",
+        pro: false,
+      },
+    ],
+  },
+  {
     name: "Berita",
     icon: <ShootingStarIcon />,
     permission: "news:view",
