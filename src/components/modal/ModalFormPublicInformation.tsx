@@ -13,7 +13,7 @@ import DeleteHeader from "../ui/alert/DeleteHeader";
 interface ModalProps {
   isOpen: boolean;
   closeModal: () => void;
-  action: "create" | "update" | "delete" | null;
+  action?: "create" | "update" | "delete" | "approval" | null;
   item?: any;
   infoId?: string | null;
 }
@@ -48,8 +48,8 @@ export default function ModalFormPublicInformation({ isOpen, closeModal, action,
     }
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e && e.preventDefault) e.preventDefault();
     if (action === "delete") {
       mutation.mutate(new FormData());
       return;
@@ -73,12 +73,16 @@ export default function ModalFormPublicInformation({ isOpen, closeModal, action,
     return (
       <Modal isOpen={isOpen} onClose={closeModal} className="max-w-md">
         <div className="flex flex-col gap-6 p-6">
-          <DeleteHeader title="Hapus Data" description="Apakah Anda yakin ingin menghapus data ini?" />
+          <DeleteHeader />
+          <div className="text-center">
+            <h3 className="text-lg font-bold mb-2">Hapus Data</h3>
+            <p>Apakah Anda yakin ingin menghapus data ini?</p>
+          </div>
           <div className="flex items-center justify-end w-full gap-3 mt-6">
             <Button size="sm" variant="outline" onClick={closeModal} className="w-full">
               Batal
             </Button>
-            <Button size="sm" variant="primary" onClick={handleSubmit} className="w-full" disabled={mutation.isPending}>
+            <Button size="sm" variant="primary" onClick={() => handleSubmit()} className="w-full" disabled={mutation.isPending}>
               {mutation.isPending ? "Menghapus..." : "Hapus"}
             </Button>
           </div>

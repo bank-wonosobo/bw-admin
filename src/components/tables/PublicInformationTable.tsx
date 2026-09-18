@@ -151,7 +151,7 @@ export default function PublicInformationTable() {
       <div className="flex justify-between items-center mt-5">
         <Pagination
           currentPage={currentPage}
-          totalPage={totalPage}
+          totalPages={totalPage}
           onPageChange={setCurrentPage}
         />
       </div>
